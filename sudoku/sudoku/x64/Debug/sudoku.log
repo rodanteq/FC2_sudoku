@@ -1,0 +1,3 @@
+﻿  reglasSudoku.cpp
+MSVCRTD.lib(exe_main.obj) : error LNK2019: símbolo externo main sin resolver al que se hace referencia en la función "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)
+D:\PracticaFP2\sudoku\x64\Debug\sudoku.exe : fatal error LNK1120: 1 externos sin resolver
