@@ -14,5 +14,5 @@ public:
 	void set_up(int v);
 	int get_dimension() const;
 	tCelda get_value(int f, int c) const;
-	void set_value(int f, int c, int v);
+	void set_value(int f, int c, int v, int estado);
 };

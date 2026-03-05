@@ -19,8 +19,9 @@ void table(tReglasSudoku& const tab) {
 				cout << char(BARRA_VERTICAL);
 				for (int d = 0; d < j; d++) {
 					cout << setw(MITAD_ANCHO) << setfill(' ') << ' ';
-					if (tab.get_celda(a + b, c + d).is_empty())
+					if (tab.get_celda(a + b, c + d).is_empty()) {
 						cout << char(BLANCO);
+					}
 					else cout << tab.get_celda(a + b, c + d).get_value();
 					cout << setw(MITAD_ANCHO) << setfill(' ') << ' ';
 				}

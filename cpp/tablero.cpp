@@ -14,6 +14,18 @@ tCelda tTablero::get_value(int f, int c) const {
 	return dat[f][c];
 }
 
-void tTablero::set_value(int f, int c, int v) {
+void tTablero::set_value(int f, int c, int v, int estado) {
 	dat[f][c].set_value(v);
+	switch (estado) {
+	case 0:
+		dat[f][c].set_original();
+		break;
+	case 1:
+		dat[f][c].set_taken();
+		break;
+	case 2:
+		dat[f][c].set_empty();
+		break;
+	}
+
 }

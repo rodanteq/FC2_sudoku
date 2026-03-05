@@ -11,6 +11,10 @@ int tReglasSudoku::get_dimension() const {
 tCelda tReglasSudoku::get_celda(int f, int c) const {
 	return tablero.get_value(f, c);
 }
+tCelda tReglasSudoku::get_celda_editable(int f, int c) {
+	return tablero.get_value(f, c);
+}
+
 bool tReglasSudoku::finish() const { // comprobar si los valores son correctos??
 	return cont == get_dimension() * get_dimension();
 }
@@ -172,7 +176,7 @@ bool tReglasSudoku::set_value(int f, int c, int v) {
 	int dim = get_dimension();
 	if (f < dim && c < dim && is_posible_value(f, c, v)) {
 
-		tablero.set_value(f, c, v); get_celda(f, c).set_taken();
+		tablero.set_value(f, c, v,1); 
 		cont++;
 		search_new_blocked(f, c);
 
@@ -181,21 +185,17 @@ bool tReglasSudoku::set_value(int f, int c, int v) {
 	else return false;
 }
 bool tReglasSudoku::clear_value(int f, int c) {
-<<<<<<< HEAD
 
 	int dim = get_dimension();
 	if (f < dim && c < dim && not get_celda(f, c).is_empty()) {
 
-		get_celda(f, c).set_empty();
+		tablero.set_value(f, c, 0, 2);
 		cont--;
 		search_not_blocked(f, c);
 
 		return true;
 	}
 	else return false;
-=======
-	return true;
->>>>>>> 78b47eb (Main terminado)
 }
 void tReglasSudoku::reset() {
 
@@ -204,7 +204,7 @@ void tReglasSudoku::reset() {
 
 			if (not get_celda(i, j).is_original()) {
 
-				get_celda(i, j).set_empty();
+				tablero.set_value(i,j,0,2);
 			}
 		}
 	}
@@ -231,7 +231,7 @@ void tReglasSudoku::load_sudoku(ifstream& file) {
 		for (int j = 0; j < dim; j++) {
 			file >> v;
 			if (v != 0) {
-				tablero.set_value(i, j, v);
+				tablero.set_value(i, j, v, 0);
 				get_celda(i, j).set_original();
 				cont++;
 			}

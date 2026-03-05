@@ -1,7 +1,4 @@
-﻿  main.cpp
-C:\Formacion\Carrera\fundamentos-de-la-programacion\2\practicaImportante\FC2_sudoku\h\mostrar.h(16,42): warning C4227: se ha utilizado un anacronismo: se omiten los calificadores de la referencia
-C:\Formacion\Carrera\fundamentos-de-la-programacion\2\practicaImportante\FC2_sudoku\h\mostrar.h(18,36): warning C4227: se ha utilizado un anacronismo: se omiten los calificadores de la referencia
-C:\Formacion\Carrera\fundamentos-de-la-programacion\2\practicaImportante\FC2_sudoku\h\mostrar.h(19,45): warning C4227: se ha utilizado un anacronismo: se omiten los calificadores de la referencia
-C:\Formacion\Carrera\fundamentos-de-la-programacion\2\practicaImportante\FC2_sudoku\main.cpp(5,35): warning C4227: se ha utilizado un anacronismo: se omiten los calificadores de la referencia
-C:\Formacion\Carrera\fundamentos-de-la-programacion\2\practicaImportante\FC2_sudoku\main.cpp(16,20): warning C4101: 'aux1': variable local sin referencia
+﻿  reglasSudoku.cpp
+C:\Formacion\Carrera\fundamentos-de-la-programacion\2\practicaImportante\FC2_sudoku\cpp\reglasSudoku.cpp(47,15): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Formacion\Carrera\fundamentos-de-la-programacion\2\practicaImportante\FC2_sudoku\cpp\reglasSudoku.cpp(113,15): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
   Sudoku.vcxproj -> C:\Formacion\Carrera\fundamentos-de-la-programacion\2\practicaImportante\FC2_sudoku\x64\Debug\Sudoku.exe

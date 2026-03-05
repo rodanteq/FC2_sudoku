@@ -24,6 +24,7 @@ private:
 	void search_new_blocked(int f, int c);
 	void search_not_blocked(int f, int c);
 	int get_posible_value(int f, int c);
+	tCelda get_celda_editable(int f, int c);
 
 
 public:

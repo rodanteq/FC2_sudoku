@@ -1,6 +1,7 @@
 #include "h/reglasSudoku.h"
 #include "h/mostrar.h"
 
+string const PATH = "files/sudoku_1.txt";
 
 void ask(tReglasSudoku& const rTab, int& option) {
 	if (rTab.blocked())
@@ -13,10 +14,17 @@ void ask(tReglasSudoku& const rTab, int& option) {
 
 int main() {
 	tReglasSudoku rTab;
+	ifstream arc;
 	int option, i, j, aux1, valor;
 	char char1;
 	bool exit = false;
 
+	arc.open(PATH);
+	if (!arc.is_open()) {
+		cout << "Fallo al cargar archivo.";
+		return 1;
+	}
+	rTab.load_sudoku(arc);
 
 	showTablero(rTab);
 	showMenu();
@@ -29,8 +37,12 @@ int main() {
 			cout << "Valor: ";
 			cin >> valor;
 
-			if (rTab.is_posible_value(i,j,valor))
-				rTab.set_value(1, j, valor);
+			if (rTab.is_posible_value(i, j, valor)) {
+				rTab.set_value(i, j, valor);
+
+			}
+
+			
 
 			ask(rTab, option);
 			break;
@@ -82,6 +94,7 @@ int main() {
 			cin >> char1;
 			exit = true;
 		}
+		cout << rTab.get_celda(1, 1).is_empty();
 	}
 	return 0;
 }
