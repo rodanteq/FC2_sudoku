@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <iomanip>
-#include "tablero.h"
+#include "reglasSudoku.h"
 #include "colors.h"
 
 const short int BARRA_HORIZONTAL = 196,
@@ -13,4 +13,7 @@ MITAD_ANCHO = ANCHO_CELDA / 2,
 BLANCO = 250;
 
 
-void mostrarTablero(tTablero& const tab);
+void showTablero(tReglasSudoku& const tab);
+void showMenu();
+void table(tReglasSudoku& const tab);
+void showBlocked(tReglasSudoku& const regTab);

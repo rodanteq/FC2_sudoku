@@ -181,6 +181,7 @@ bool tReglasSudoku::set_value(int f, int c, int v) {
 	else return false;
 }
 bool tReglasSudoku::clear_value(int f, int c) {
+<<<<<<< HEAD
 
 	int dim = get_dimension();
 	if (f < dim && c < dim && not get_celda(f, c).is_empty()) {
@@ -192,6 +193,9 @@ bool tReglasSudoku::clear_value(int f, int c) {
 		return true;
 	}
 	else return false;
+=======
+	return true;
+>>>>>>> 78b47eb (Main terminado)
 }
 void tReglasSudoku::reset() {
 
