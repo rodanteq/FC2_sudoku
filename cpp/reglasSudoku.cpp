@@ -220,5 +220,18 @@ void tReglasSudoku::autofill() {
 
 /* inicializadora */
 void tReglasSudoku::load_sudoku(ifstream& file) {
-
+	int v;
+	int dim;
+	file >> dim;
+	for (int i = 0; i < dim; i++) {
+		for (int j = 0; j < dim; j++) {
+			file >> v;
+			if (v != 0) {
+				tablero.set_value(i, j, v);
+				get_celda(i, j).set_original();
+				cont++;
+			}
+			else get_celda(i, j).set_empty();
+		}
+	}
 }
