@@ -17,6 +17,15 @@ private:
 	tTablero tablero;
 	int cont;
 	lPositionBlocked blockedPosition;
+
+	/* metodos privados */
+	void set_celdas_blocked(int p, int f, int c);
+	bool previously_blocked(int f, int c);
+	void search_new_blocked(int f, int c);
+	void search_not_blocked(int f, int c);
+	int get_posible_value(int f, int c);
+
+
 public:
 	/* constructora */
 	tReglasSudoku();
@@ -28,7 +37,7 @@ public:
 	bool blocked() const ; // true si el Sudoku tiene celdas bloqueadas
 	int get_num_celdas_blocked() const ; // devuelve el número de celdas bloqueadas
 	int get_num_celdas_empty() const ; // devuelve el número de celdas vacías
-	void get_celdas_blocked(int p, int& f, int& c) const; // devuelve en (f,c) la celda bloqueada en la posición p
+	void get_celdas_blocked(int p, int& f, int& c) const; // devuelve en (f,c) la celda bloqueada en la posición p - creamos un metodo privado set_celdas_blocked
 	bool is_posible_value(int f, int c, int v) const; // true si y sólo si v se puede colocar en (f,c)
 	int posible_values(int f, int c) const; // devuelve el número de posibles valores para (f,c)
 	

@@ -1,11 +1,10 @@
 #pragma once
 #include <iostream> // así ya lo tenemos
 
-enum tEstado {ORIGINAL, TAKEN, EMPTY};
-
 class tCelda {
 
 private:
+	enum tEstado { ORIGINAL, TAKEN, EMPTY };
 	int value;
 	tEstado status;
 public:

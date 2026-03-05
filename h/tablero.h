@@ -6,7 +6,7 @@ const int DIM_TABLERO = 9;
 class tTablero {
 
 private:
-	int dimension;
+	int dimension; // numero del 1 al 9 para ser más intuitivo
 	tCelda dat[DIM_TABLERO][DIM_TABLERO];
 
 public:
