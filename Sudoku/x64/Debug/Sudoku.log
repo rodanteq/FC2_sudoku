@@ -1,4 +1,0 @@
-﻿  reglasSudoku.cpp
-C:\Formacion\Carrera\fundamentos-de-la-programacion\2\practicaImportante\FC2_sudoku\cpp\reglasSudoku.cpp(47,15): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
-C:\Formacion\Carrera\fundamentos-de-la-programacion\2\practicaImportante\FC2_sudoku\cpp\reglasSudoku.cpp(113,15): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
-  Sudoku.vcxproj -> C:\Formacion\Carrera\fundamentos-de-la-programacion\2\practicaImportante\FC2_sudoku\x64\Debug\Sudoku.exe
