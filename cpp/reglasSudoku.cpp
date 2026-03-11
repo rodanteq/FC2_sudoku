@@ -162,11 +162,9 @@ void tReglasSudoku::search_not_blocked(int f, int c) {
 }
 int tReglasSudoku::get_posible_value(int f, int c) { // presuponemos que se utilizara cuando solo quede una posicion posible
 
-	int num = 1; bool fin = false;
-	while (num <= get_dimension() && not fin) {
-
-		if (is_posible_value(f, c, num)) fin = true;
-		else num++;
+	int num = 1;
+	while (num <= get_dimension() && not is_posible_value(f, c, num)) {
+		num++;
 	}
 	return num;
 }
@@ -232,10 +230,9 @@ void tReglasSudoku::load_sudoku(ifstream& file) {
 			file >> v;
 			if (v != 0) {
 				tablero.set_value(i, j, v, 0);
-				get_celda(i, j).set_original();
 				cont++;
 			}
-			else get_celda(i, j).set_empty();
+			else tablero.set_value(i, j, 0, 2);
 		}
 	}
 }

@@ -11,6 +11,7 @@ void barHorizontal(int j) {
 void table(tReglasSudoku& const tab) {
 	int i = tab.get_dimension();
 	int j = sqrt(i);
+	tCelda aux;
 	for (int a = 0; a < i; a += j) {
 		barHorizontal(j);
 		for (int b = 0; b < j; b++) {
@@ -19,10 +20,15 @@ void table(tReglasSudoku& const tab) {
 				cout << char(BARRA_VERTICAL);
 				for (int d = 0; d < j; d++) {
 					cout << setw(MITAD_ANCHO) << setfill(' ') << ' ';
-					if (tab.get_celda(a + b, c + d).is_empty()) {
+					aux = tab.get_celda(a + b, c + d);
+					if (aux.is_empty()) {
 						cout << char(BLANCO);
 					}
-					else cout << tab.get_celda(a + b, c + d).get_value();
+					else{ 
+						if (aux.is_original()) 
+							cout << ORANGE << aux.get_value() << RESET;
+						else cout << aux.get_value();
+					}
 					cout << setw(MITAD_ANCHO) << setfill(' ') << ' ';
 				}
 			}
