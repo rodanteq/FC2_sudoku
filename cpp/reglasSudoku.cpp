@@ -11,9 +11,6 @@ int tReglasSudoku::get_dimension() const {
 tCelda tReglasSudoku::get_celda(int f, int c) const {
 	return tablero.get_value(f, c);
 }
-tCelda tReglasSudoku::get_celda_editable(int f, int c) {
-	return tablero.get_value(f, c);
-}
 
 bool tReglasSudoku::finish() const { // comprobar si los valores son correctos??
 	return cont == get_dimension() * get_dimension();
@@ -62,7 +59,7 @@ bool tReglasSudoku::is_posible_value(int f, int c, int v) const {
 	i = 0, j = 0;
 	while (i < dimsqr && posible) {
 		while (j < dimsqr && posible) {
-			if (not get_celda(sqry*dimsqr + i, sqrx*dimsqr + j).is_empty() && get_celda(sqry * dimsqr + i, sqrx * dimsqr + j).get_value() == v) {
+			if (not get_celda(sqry * dimsqr + i, sqrx * dimsqr + j).is_empty() && get_celda(sqry * dimsqr + i, sqrx * dimsqr + j).get_value() == v) {
 				posible = false;
 			}
 			j++;
@@ -86,7 +83,7 @@ void tReglasSudoku::set_celdas_blocked(int p, int f, int c) {
 	blockedPosition.dat[p][0] = f;
 	blockedPosition.dat[p][1] = c;
 }
-bool tReglasSudoku::previously_blocked(int f, int c) {
+bool tReglasSudoku::previously_blocked(int f, int c) const {
 	
 	int i = 0; int faux, caux;
 	bool encontrado = false;
@@ -160,7 +157,7 @@ void tReglasSudoku::search_not_blocked(int f, int c) {
 		}
 	}
 }
-int tReglasSudoku::get_posible_value(int f, int c) { // presuponemos que se utilizara cuando solo quede una posicion posible
+int tReglasSudoku::get_posible_value(int f, int c) const { // presuponemos que se utilizara cuando solo quede una posicion posible
 
 	int num = 1;
 	while (num <= get_dimension() && not is_posible_value(f, c, num)) {
@@ -169,12 +166,12 @@ int tReglasSudoku::get_posible_value(int f, int c) { // presuponemos que se util
 	return num;
 }
 
-bool tReglasSudoku::set_value(int f, int c, int v) {
+bool tReglasSudoku::set_value(int f, int c, tCelda celda) {
 
 	int dim = get_dimension();
-	if (f < dim && c < dim && is_posible_value(f, c, v)) {
+	if (f < dim && c < dim && is_posible_value(f, c, celda.get_value())) {
 
-		tablero.set_value(f, c, v,1); 
+		tablero.set_value(f, c, celda); 
 		cont++;
 		search_new_blocked(f, c);
 
@@ -184,10 +181,13 @@ bool tReglasSudoku::set_value(int f, int c, int v) {
 }
 bool tReglasSudoku::clear_value(int f, int c) {
 
+	tCelda celda;
+	celda.set_empty();
+
 	int dim = get_dimension();
 	if (f < dim && c < dim && not get_celda(f, c).is_empty()) {
 
-		tablero.set_value(f, c, 0, 2);
+		tablero.set_value(f, c, celda);
 		cont--;
 		search_not_blocked(f, c);
 
@@ -197,12 +197,16 @@ bool tReglasSudoku::clear_value(int f, int c) {
 }
 void tReglasSudoku::reset() {
 
+	tCelda celda;
+	celda.set_empty();
+
 	for (int i = 0; i < get_dimension(); i++) {
+
 		for (int j = 0; j < get_dimension(); j++) {
 
 			if (not get_celda(i, j).is_original()) {
 
-				tablero.set_value(i,j,0,2);
+				tablero.set_value(i, j, celda);
 			}
 		}
 	}
@@ -210,11 +214,15 @@ void tReglasSudoku::reset() {
 }
 void tReglasSudoku::autofill() {
 
+	tCelda celda;
+	celda.set_taken();
+
 	for (int i = 0; i < get_dimension(); i++) {
 		for (int j = 0; j < get_dimension(); j++) {
 			if (get_celda(i, j).is_empty() && posible_values(i, j) == 1) {
 
-				set_value(i, j, get_posible_value(i, j));	
+				celda.set_value(get_posible_value(i, j));
+				set_value(i, j, celda);	
 			}
 		}
 	}
@@ -225,14 +233,22 @@ void tReglasSudoku::load_sudoku(ifstream& file) {
 	int v;
 	int dim;
 	file >> dim;
+
+	tCelda celda;
+
 	for (int i = 0; i < dim; i++) {
 		for (int j = 0; j < dim; j++) {
 			file >> v;
 			if (v != 0) {
-				tablero.set_value(i, j, v, 0);
+				celda.set_value(v);
+				celda.set_original();
+				tablero.set_value(i, j, celda);
 				cont++;
 			}
-			else tablero.set_value(i, j, 0, 2);
+			else {
+				celda.set_empty();
+				tablero.set_value(i, j, celda);
+			}
 		}
 	}
 }

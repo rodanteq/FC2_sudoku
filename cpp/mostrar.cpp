@@ -2,9 +2,11 @@
 using namespace std;
 
 void barHorizontal(int j) {
+
 	cout << "  ";
 	for (int i = 0; i < j; i++)
 		cout << char(CRUZ) << setw(j * ANCHO_CELDA) << setfill(char(BARRA_HORIZONTAL)) << char(BARRA_HORIZONTAL);
+
 	cout << char(CRUZ) << '\n';
 }
 
@@ -40,15 +42,16 @@ void table(tReglasSudoku& const tab) {
 
 
 void showTablero(tReglasSudoku& const tab) {
+
 	int i, j;
 	i = tab.get_dimension();
 	j = sqrt(i);
-
 
 	cout << "\n\n   ";
 	for (int c = 1; c <= i; c += j) {
 		for (int d = 0; d < j; d++)
 			cout << setw(MITAD_ANCHO) << setfill(' ') << ' ' << c+d << setw(MITAD_ANCHO) << setfill(' ') << ' ';
+
 		cout << ' ';
 	}
 	cout << "\n";
@@ -58,16 +61,19 @@ void showTablero(tReglasSudoku& const tab) {
 }
 
 void showMenu() {
-	cout << "1.- poner numero\n" <<
-		"2.- quitar numero\n" <<
-		"3.- reset\n" <<
-		"4.- posibles valores de una celda vacia\n" <<
-		"5.- autocompletar celdas con valor unico\n" <<
-		"6.- salir\n" <<
+
+	cout << 
+		"1.- Poner numero\n" <<
+		"2.- Quitar numero\n" <<
+		"3.- Reset\n" <<
+		"4.- Posibles valores de una celda vacia\n" <<
+		"5.- Autocompletar celdas con valor unico\n" <<
+		"6.- Salir\n" <<
 		"Elige una opcion: ";
 }
 
 void showBlocked(tReglasSudoku& const regTab) {
+
 	cout << "Sudoku bloqueado.....\n" <<
 		"Las casillas bloqueadas son: ";
 
