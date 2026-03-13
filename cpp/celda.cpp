@@ -10,6 +10,7 @@ bool tCelda::is_original() const {
 	return status == ORIGINAL;
 }
 bool tCelda::is_taken() const {
+
 	return status == TAKEN;
 }
 int tCelda::get_value() const {

@@ -20,11 +20,10 @@ private:
 
 	/* metodos privados */
 	void set_celdas_blocked(int p, int f, int c);
-	bool previously_blocked(int f, int c);
+	bool previously_blocked(int f, int c) const;
 	void search_new_blocked(int f, int c);
 	void search_not_blocked(int f, int c);
-	int get_posible_value(int f, int c);
-
+	int get_posible_value(int f, int c) const;
 
 public:
 	/* constructora */
@@ -42,7 +41,7 @@ public:
 	int posible_values(int f, int c) const; // devuelve el número de posibles valores para (f,c)
 	
 	/* modificadoras */
-	bool set_value(int f, int c, int v); // pone v en (f,c)
+	bool set_value(int f, int c, tCelda celda); // pone v en (f,c)
 	bool clear_value(int f, int c); // pone la celda (f,c) a VACIA
 	void reset(); // recupera el Sudoku original
 	void autofill(); // rellena todas las celdas con un único valor posible
