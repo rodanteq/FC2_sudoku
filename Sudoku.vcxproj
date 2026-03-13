@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -129,12 +129,13 @@
   <ItemGroup>
     <ClInclude Include="h\celda.h" />
     <ClInclude Include="h\colors.h" />
+    <ClInclude Include="h\mostrar.h" />
     <ClInclude Include="h\reglasSudoku.h" />
     <ClInclude Include="h\tablero.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\celda.cpp" />
-    <ClCompile Include="cpp\colors.cpp" />
+    <ClCompile Include="cpp\mostrar.cpp" />
     <ClCompile Include="cpp\reglasSudoku.cpp" />
     <ClCompile Include="cpp\tablero.cpp" />
     <ClCompile Include="main.cpp" />
@@ -142,6 +143,7 @@
   <ItemGroup>
     <Text Include="files\sudoku_1.txt" />
     <Text Include="files\sudoku_2.txt" />
+    <Text Include="files\sudoku_3.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="files\Sudoku_v1__matriz3D.pdf" />

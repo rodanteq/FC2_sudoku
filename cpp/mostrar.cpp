@@ -2,45 +2,94 @@
 using namespace std;
 
 void barHorizontal(int j) {
+
 	cout << "  ";
 	for (int i = 0; i < j; i++)
-		cout << char(CRUZ) << setw(j * ANCHO_CELDA) << setfill(char(BARRA_HORIZONTAL));
+		cout << char(CRUZ) << setw(3 * j) << setfill(char(BARRA_HORIZONTAL)) << char(BARRA_HORIZONTAL);
+
 	cout << char(CRUZ) << '\n';
 }
 
+void table(tReglasSudoku& const tab) {
 
-void mostrarTablero(tTablero& const tab) {
-	int i, j;
-	i = tab.get_dimension()+1;
-	j = sqrt(i)+1;
-	cout << "  ";
-	for (int c = 1; c <= i; c++)
-		cout << setw(MITAD_ANCHO) << setfill(' ') << ' ' << c << setw(MITAD_ANCHO) << setfill(' ') << ' ';
-	cout << '\n';
+	int i = tab.get_dimension();
+	int j = sqrt(i);
+	// cout << "i es " << i << " y j es " << j << '\n';
+	tCelda aux;
 
-	for (int a = 1; a <= i; a += j) {
+	for (int a = 0; a < i; a += j) {
+
 		barHorizontal(j);
-		for (int b = 1; b <= i; b += j) {
-			cout << a * j + b << ' ';
-			for (int c = 0; c < i; c += j){
+		for (int b = 0; b < j; b++) {
+
+			cout << a + b + 1 << ' ';
+			for (int c = 0; c < i; c += j) {
+
 				cout << char(BARRA_VERTICAL);
-				for (int d = 0; d < i; d += j) {
-					cout << setw(MITAD_ANCHO) << setfill(' ') << ' ';
-					if (tab.get_value(a * j + b, c * j + d).is_empty())
+				for (int d = 0; d < j; d++) {
+
+					cout << setw(j / 2) << setfill(' ') << ' ';
+					aux = tab.get_celda(a + b, c + d);
+					if (aux.is_empty()) {
 						cout << char(BLANCO);
-					else cout << tab.get_value(a * j + b, c * j + d).get_value();
-					cout << setw(MITAD_ANCHO) << setfill(' ') << ' ';
+					}
+					else{ 
+						if (aux.is_original()) 
+							cout << ORANGE << aux.get_value() << RESET;
+						else cout << aux.get_value();
+					}
+					cout << setw(j / 2) << setfill(' ') << ' ';
 				}
-				cout << char(BARRA_VERTICAL);
 			}
 			cout << char(BARRA_VERTICAL) << '\n';
-			cout << char(BARRA_VERTICAL);
 		}
 	}
+	barHorizontal(j);
+}
 
 
+void showTablero(tReglasSudoku& const tab) {
 
+	int i, j;
+	i = tab.get_dimension();
+	j = sqrt(i);
 
+	cout << "\n\n   ";
+	for (int c = 1; c <= i; c += j) {
+		for (int d = 0; d < j; d++)
+			cout << setw(j / 2) << setfill(' ') << ' ' << c+d << setw(j / 2) << setfill(' ') << ' ';
 
-	cout << "hola";
+		cout << ' ';
+	}
+	cout << "\n";
+
+	table(tab);
+
+	cout << '\n';
+}
+
+void showMenu() {
+
+	cout << 
+		"1.- Poner numero\n" <<
+		"2.- Quitar numero\n" <<
+		"3.- Reset\n" <<
+		"4.- Posibles valores de una celda vacia\n" <<
+		"5.- Autocompletar celdas con valor unico\n" <<
+		"6.- Salir\n" <<
+		"Elige una opcion: ";
+}
+
+void showBlocked(tReglasSudoku& const regTab) {
+
+	cout << "Sudoku bloqueado...\n" <<
+		"Las casillas bloqueadas son: ";
+
+	int n = regTab.get_num_celdas_blocked(), a,b;
+	for (int i = 0; i < n; i++) {
+		regTab.get_celdas_blocked(n, a, b);
+		cout << '(' << a + 1 << ',' << b + 1 << ")  ";
+	}
+	cout << '\n' <<
+		"Considere la opcion de cambiar los valores o resetear\n";
 }
