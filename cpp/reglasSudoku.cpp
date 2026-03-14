@@ -197,8 +197,8 @@ bool tReglasSudoku::clear_value(int f, int c) {
 }
 void tReglasSudoku::reset() {
 
-	tCelda celda;
-	celda.set_empty();
+	tCelda celda1, celda2;
+	celda1.set_empty();
 	blockedPosition.n = 0;
 
 	for (int i = 0; i < get_dimension(); i++) {
@@ -207,7 +207,11 @@ void tReglasSudoku::reset() {
 
 			if (not get_celda(i, j).is_original()) {
 
-				tablero.set_value(i, j, celda);
+				tablero.set_value(i, j, celda1);
+			}
+			else {
+				celda2 = get_celda(i, j);
+				tablero.set_value(i, j, celda2);
 			}
 		}
 	}
