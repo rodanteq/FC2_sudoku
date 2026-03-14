@@ -3,7 +3,7 @@ using namespace std;
 
 void barHorizontal(int j) {
 
-	cout << "  ";
+	cout << setw(4) << setfill(' ') << ' ';
 	for (int i = 0; i < j; i++)
 		cout << char(CRUZ) << setw(3 * j) << setfill(char(BARRA_HORIZONTAL)) << char(BARRA_HORIZONTAL);
 
@@ -22,13 +22,14 @@ void table(tReglasSudoku& const tab) {
 		barHorizontal(j);
 		for (int b = 0; b < j; b++) {
 
-			cout << a + b + 1 << ' ';
+			cout << ' ' << left << setw(3) << setfill(' ') << a + b + 1;
+
 			for (int c = 0; c < i; c += j) {
 
 				cout << char(BARRA_VERTICAL);
 				for (int d = 0; d < j; d++) {
 
-					cout << setw(j / 2) << setfill(' ') << ' ';
+					cout << ' ';
 					aux = tab.get_celda(a + b, c + d);
 					if (aux.is_empty()) {
 						cout << char(BLANCO);
@@ -38,7 +39,7 @@ void table(tReglasSudoku& const tab) {
 							cout << ORANGE << aux.get_value() << RESET;
 						else cout << aux.get_value();
 					}
-					cout << setw(j / 2) << setfill(' ') << ' ';
+					cout << ' ';
 				}
 			}
 			cout << char(BARRA_VERTICAL) << '\n';
@@ -54,10 +55,10 @@ void showTablero(tReglasSudoku& const tab) {
 	i = tab.get_dimension();
 	j = sqrt(i);
 
-	cout << "\n\n   ";
+	cout << "\n\n" << setw(6) << setfill(' ') << ' ';
 	for (int c = 1; c <= i; c += j) {
 		for (int d = 0; d < j; d++)
-			cout << setw(j / 2) << setfill(' ') << ' ' << c+d << setw(j / 2) << setfill(' ') << ' ';
+			cout << left << setw(3) << setfill(' ') << c+d;
 
 		cout << ' ';
 	}

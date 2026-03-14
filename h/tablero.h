@@ -1,7 +1,7 @@
 #pragma once
 #include "celda.h"
 
-const int DIM_TABLERO = 9; // el tablero es siempre de 9x9, aunque se podrían hacer tableros de otras dimensiones, pero no es el caso
+const int DIM_TABLERO = 16; // el tablero es siempre de 9x9, aunque se podrían hacer tableros de otras dimensiones, pero no es el caso
 
 class tTablero {
 

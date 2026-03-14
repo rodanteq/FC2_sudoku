@@ -2,7 +2,7 @@
 #include "h/reglasSudoku.h"
 #include "h/mostrar.h"
 
-string const PATH = "files/sudoku_3.txt";
+string const PATH = "files/sudoku_4.txt";
 
 void ask(tReglasSudoku& const rTab) {
 
@@ -75,14 +75,24 @@ int main() {
 			cout << "Columna (valor entre 1..." << rTab.get_dimension() << ") : ";
 			cin >> j;
 
-			cout << "Los posibles valores para la celda son: { ";
-			for (int a = 0; a <= 9; a++) {
-				if (rTab.is_posible_value(i - 1, j - 1, a)) cout << a << " ";
-			}
-			cout << "}\n";
+			if (rTab.get_celda(i, j).is_original()) {
 
-			ask(rTab);
-			break;
+				cout << "Error, celda original\n";
+			}
+			else if (rTab.get_celda(i, j).is_taken()) {
+
+				cout << "Error, celda ocupada\n";
+			}
+			else {
+
+				cout << "Los posibles valores para la celda son: { ";
+				for (int a = 1; a <= rTab.get_dimension(); a++) {
+					if (rTab.is_posible_value(i - 1, j - 1, a)) cout << a << " ";
+				}
+				cout << "}\n";
+			}
+				ask(rTab);
+				break;
 
 		case 5:
 			rTab.autofill();
