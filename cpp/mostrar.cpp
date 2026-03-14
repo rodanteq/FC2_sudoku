@@ -31,15 +31,12 @@ void table(tReglasSudoku& const tab) {
 
 					cout << ' ';
 					aux = tab.get_celda(a + b, c + d);
-					if (aux.is_empty()) {
-						cout << char(BLANCO);
-					}
-					else{ 
-						if (aux.is_original()) 
-							cout << ORANGE << aux.get_value() << RESET;
-						else cout << aux.get_value();
-					}
-					cout << ' ';
+					if (aux.is_empty())
+						cout << char(BLANCO) << ' ';
+					else if (aux.is_original()) 
+						cout << ORANGE << aux.get_value() << RESET << ' ';
+					else 
+						cout << setw(2) << setfill(' ') << left << aux.get_value();					
 				}
 			}
 			cout << char(BARRA_VERTICAL) << '\n';
@@ -88,7 +85,7 @@ void showBlocked(tReglasSudoku& const regTab) {
 
 	int n = regTab.get_num_celdas_blocked(), a,b;
 	for (int i = 0; i < n; i++) {
-		regTab.get_celdas_blocked(n, a, b);
+		regTab.get_celdas_blocked(i, a, b);
 		cout << '(' << a + 1 << ',' << b + 1 << ")  ";
 	}
 	cout << '\n' <<
