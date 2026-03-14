@@ -29,11 +29,7 @@ void tReglasSudoku::get_celdas_blocked(int p, int& f, int& c) const {
 	c = blockedPosition.dat[p][1];
 }
 bool tReglasSudoku::is_posible_value(int f, int c, int v) const {
-	if (f >= get_dimension() || c >= get_dimension() || f < 0 || c < 0) {
-		cout << "Error, posicion fuera de rango\n";
-		return false;
-	}
-	else if (not get_celda(f, c).is_empty()) {
+	if (not get_celda(f, c).is_empty()) {
 		cout << "Error, celda ya ocupada\n";
 		return false;
 	}
@@ -189,27 +185,15 @@ bool tReglasSudoku::clear_value(int f, int c) {
 	celda.set_empty();
 
 	int dim = get_dimension();
-	if (get_celda(f, c).is_empty()) {
-		cout << "Error, celda ya vacia\n";
-		return false;
-	}
-	else if (get_celda(f, c).is_original()) {
-		cout << "Error, celda original\n";
-		return false;
-	}
-	else if (f >= get_dimension() || c >= get_dimension() || f < 0 || c < 0) {
-		cout << "Error, posicion fuera de rango\n";
-		return false;
-	}
-	else {
+	if (f < dim && c < dim && not get_celda(f, c).is_empty()) {
 
 		tablero.set_value(f, c, celda);
 		cont--;
 		search_not_blocked(f, c);
 
-		cout << "Valor borrado\n";
 		return true;
 	}
+	else return false;
 }
 void tReglasSudoku::reset() {
 
@@ -245,13 +229,10 @@ void tReglasSudoku::autofill() {
 }
 
 /* inicializadora */
-void tReglasSudoku::load_sudoku(ifstream& file) { // suponemos que el archivo es correcto
+void tReglasSudoku::load_sudoku(ifstream& file) {
 	int v;
 	int dim;
 	file >> dim;
-
-	tablero.set_up(dim);
-	// cout << "dim es : " << dim << '\n';
 
 	tCelda celda;
 

@@ -3,33 +3,25 @@ using namespace std;
 
 void barHorizontal(int j) {
 
-	cout << setw(4) << setfill(' ') << ' ';
+	cout << "  ";
 	for (int i = 0; i < j; i++)
-		cout << char(CRUZ) << setw(3 * j) << setfill(char(BARRA_HORIZONTAL)) << char(BARRA_HORIZONTAL);
+		cout << char(CRUZ) << setw(j * ANCHO_CELDA) << setfill(char(BARRA_HORIZONTAL)) << char(BARRA_HORIZONTAL);
 
 	cout << char(CRUZ) << '\n';
 }
 
 void table(tReglasSudoku& const tab) {
-
 	int i = tab.get_dimension();
 	int j = sqrt(i);
-	// cout << "i es " << i << " y j es " << j << '\n';
 	tCelda aux;
-
 	for (int a = 0; a < i; a += j) {
-
 		barHorizontal(j);
 		for (int b = 0; b < j; b++) {
-
-			cout << ' ' << left << setw(3) << setfill(' ') << a + b + 1;
-
+			cout << a + b + 1 << ' ';
 			for (int c = 0; c < i; c += j) {
-
 				cout << char(BARRA_VERTICAL);
 				for (int d = 0; d < j; d++) {
-
-					cout << ' ';
+					cout << setw(MITAD_ANCHO) << setfill(' ') << ' ';
 					aux = tab.get_celda(a + b, c + d);
 					if (aux.is_empty()) {
 						cout << char(BLANCO);
@@ -39,7 +31,7 @@ void table(tReglasSudoku& const tab) {
 							cout << ORANGE << aux.get_value() << RESET;
 						else cout << aux.get_value();
 					}
-					cout << ' ';
+					cout << setw(MITAD_ANCHO) << setfill(' ') << ' ';
 				}
 			}
 			cout << char(BARRA_VERTICAL) << '\n';
@@ -55,17 +47,16 @@ void showTablero(tReglasSudoku& const tab) {
 	i = tab.get_dimension();
 	j = sqrt(i);
 
-	cout << "\n\n" << setw(6) << setfill(' ') << ' ';
+	cout << "\n\n   ";
 	for (int c = 1; c <= i; c += j) {
 		for (int d = 0; d < j; d++)
-			cout << left << setw(3) << setfill(' ') << c+d;
+			cout << setw(MITAD_ANCHO) << setfill(' ') << ' ' << c+d << setw(MITAD_ANCHO) << setfill(' ') << ' ';
 
 		cout << ' ';
 	}
 	cout << "\n";
 
 	table(tab);
-
 	cout << '\n';
 }
 
@@ -83,13 +74,13 @@ void showMenu() {
 
 void showBlocked(tReglasSudoku& const regTab) {
 
-	cout << "Sudoku bloqueado...\n" <<
+	cout << "Sudoku bloqueado.....\n" <<
 		"Las casillas bloqueadas son: ";
 
 	int n = regTab.get_num_celdas_blocked(), a,b;
 	for (int i = 0; i < n; i++) {
 		regTab.get_celdas_blocked(n, a, b);
-		cout << '(' << a + 1 << ',' << b + 1 << ")  ";
+		cout << '(' << a << ',' << b << ")  ";
 	}
 	cout << '\n' <<
 		"Considere la opcion de cambiar los valores o resetear\n";

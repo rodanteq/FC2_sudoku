@@ -2,7 +2,7 @@
 #include "h/reglasSudoku.h"
 #include "h/mostrar.h"
 
-string const PATH = "files/sudoku_4.txt";
+string const PATH = "files/sudoku_1.txt";
 
 void ask(tReglasSudoku& const rTab) {
 
@@ -35,9 +35,9 @@ int main() {
 		cin >> option;
 		switch (option) {
 		case 1:
-			cout << "Fila (valor entre 1..." << rTab.get_dimension() << ") : ";
+			cout << "Fila (valor entre 1...9) : ";
 			cin >> i;
-			cout << "Columna (valor entre 1..." << rTab.get_dimension() << ") : ";
+			cout << "Columna (valor entre 1...9) : ";
 			cin >> j;
 			cout << "Valor: ";
 			cin >> valor;
@@ -53,9 +53,9 @@ int main() {
 			break;
 
 		case 2:
-			cout << "Fila (valor entre 1..." << rTab.get_dimension() << ") : ";
+			cout << "Fila (valor entre 1...9) : ";
 			cin >> i;
-			cout << "Columna (valor entre 1..." << rTab.get_dimension() << ") : ";
+			cout << "Columna (valor entre 1...9) : ";
 			cin >> j;
 
 			rTab.clear_value(i - 1, j - 1);
@@ -70,29 +70,19 @@ int main() {
 			break;
 
 		case 4:
-			cout << "Fila (valor entre 1..." << rTab.get_dimension() << ") : ";
+			cout << "Fila (valor entre 1...9) : ";
 			cin >> i;
-			cout << "Columna (valor entre 1..." << rTab.get_dimension() << ") : ";
+			cout << "Columna (valor entre 1...9) : ";
 			cin >> j;
 
-			if (rTab.get_celda(i, j).is_original()) {
-
-				cout << "Error, celda original\n";
+			cout << "Los posibles valores para la celda son: { ";
+			for (int a = 0; a <= 9; a++) {
+				if (rTab.is_posible_value(i - 1, j - 1, a)) cout << a << " ";
 			}
-			else if (rTab.get_celda(i, j).is_taken()) {
+			cout << "}\n";
 
-				cout << "Error, celda ocupada\n";
-			}
-			else {
-
-				cout << "Los posibles valores para la celda son: { ";
-				for (int a = 1; a <= rTab.get_dimension(); a++) {
-					if (rTab.is_posible_value(i - 1, j - 1, a)) cout << a << " ";
-				}
-				cout << "}\n";
-			}
-				ask(rTab);
-				break;
+			ask(rTab);
+			break;
 
 		case 5:
 			rTab.autofill();
@@ -109,13 +99,14 @@ int main() {
 			}
 			else if (char1 == 'S') exit = true;	
 			else {
-				cout << "Si quieres salir pon S\n";
+				cout << "Subnormal, si quieres salir pon S\n"; // cambiar cuando lo entreguemos
 				ask(rTab);
 			}
 			break;
 
 		default:
 			cout << "Elige una opcion correcta: ";
+			cin >> option;
 			break;
 		}
 		if (rTab.finish()){
@@ -123,7 +114,6 @@ int main() {
 			cin >> char1; 
 			exit = true;
 		}
-		cout << '\n';
 
 	} while (!exit);
 
