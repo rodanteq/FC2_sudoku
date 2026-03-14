@@ -199,6 +199,7 @@ void tReglasSudoku::reset() {
 
 	tCelda celda;
 	celda.set_empty();
+	blockedPosition.n = 0;
 
 	for (int i = 0; i < get_dimension(); i++) {
 
