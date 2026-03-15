@@ -79,8 +79,8 @@ void showBlocked(tReglasSudoku& const regTab) {
 
 	int n = regTab.get_num_celdas_blocked(), a,b;
 	for (int i = 0; i < n; i++) {
-		regTab.get_celdas_blocked(n, a, b);
-		cout << '(' << a << ',' << b << ")  ";
+		regTab.get_celdas_blocked(i, a, b);
+		cout << '(' << a + 1 << ',' << b + 1 << ")  ";
 	}
 	cout << '\n' <<
 		"Considere la opcion de cambiar los valores o resetear\n";

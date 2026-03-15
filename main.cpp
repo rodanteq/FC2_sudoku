@@ -3,7 +3,7 @@
 
 string const PATH = "files/sudoku_1.txt";
 
-void ask(tReglasSudoku& const rTab) {
+void ask(tReglasSudoku& rTab) {
 
 	if (rTab.blocked()) showBlocked(rTab);
 	showTablero(rTab);
@@ -42,9 +42,11 @@ int main() {
 			if (rTab.is_posible_value(i - 1, j - 1, valor)) {
 				celda.set_value(valor);
 				celda.set_taken();
-				rTab.set_value(i, j, celda);
+				if (!rTab.set_value(i - 1, j - 1, celda))
+					cout << "No es posible ese valor en esa celda\n";
 
 			}	
+			else cout << "No es posible ese valor en esa celda\n";
 
 			ask(rTab);
 			break;
@@ -99,7 +101,6 @@ int main() {
 
 		default:
 			cout << "Elige una opcion correcta: ";
-			cin >> option;
 			break;
 		}
 		if (rTab.finish()){

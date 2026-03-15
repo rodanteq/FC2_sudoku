@@ -78,7 +78,7 @@ int tReglasSudoku::posible_values(int f, int c) const { // en este caso los nume
 
 /* modificadoras */
 void tReglasSudoku::set_celdas_blocked(int p, int f, int c) {
-	blockedPosition.dat[p][0] = f;
+	blockedPosition.dat[p][0] = f; 
 	blockedPosition.dat[p][1] = c;
 }
 bool tReglasSudoku::previously_blocked(int f, int c) const {
@@ -168,7 +168,6 @@ bool tReglasSudoku::set_value(int f, int c, tCelda celda) {
 
 	int dim = get_dimension();
 	if (f < dim && c < dim && is_posible_value(f, c, celda.get_value())) {
-
 		tablero.set_value(f, c, celda); 
 		cont++;
 		search_new_blocked(f, c);
