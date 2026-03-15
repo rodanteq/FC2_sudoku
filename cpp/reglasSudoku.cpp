@@ -30,11 +30,9 @@ void tReglasSudoku::get_celdas_blocked(int p, int& f, int& c) const {
 }
 bool tReglasSudoku::is_posible_value(int f, int c, int v) const {
 	if (not get_celda(f, c).is_empty()) {
-		cout << "Error, celda ya ocupada\n";
 		return false;
 	}
 	else if (v > get_dimension()) {
-		cout << "Error, numero invalido\n";
 		return false;
 	}
 	int i = 0, j = 0, dimsqr, sqrx, sqry; 
