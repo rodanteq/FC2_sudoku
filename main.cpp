@@ -69,7 +69,7 @@ int main() {
 			cin >> i >> j;
 
 			cout << "Los posibles valores para la celda son: { ";
-			for (int a = 0; a <= 9; a++) {
+			for (int a = 1; a <= 9; a++) {
 				if (rTab.is_posible_value(i - 1, j - 1, a)) cout << a << " ";
 			}
 			cout << "}\n";
