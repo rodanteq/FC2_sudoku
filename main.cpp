@@ -39,6 +39,12 @@ int main() {
 			cout << "Valor: ";
 			cin >> valor;
 
+			if ((i < 0) || (j < 0) || (i > DIM_TABLERO) || (j > DIM_TABLERO)|| (valor<1) ||(valor > MAX_VALORES)) {
+				cout << "Fuera de rango\n";
+				ask(rTab);
+				break;
+			}
+
 			if (rTab.is_posible_value(i - 1, j - 1, valor)) {
 				celda.set_value(valor);
 				celda.set_taken();
@@ -55,6 +61,12 @@ int main() {
 			cout << "Fila y columna entre 1...9: ";
 			cin >> i >> j;
 
+			if ((i < 0) || (j < 0) || (i > DIM_TABLERO) || (j > DIM_TABLERO)) {
+				cout << "Fuera de rango\n";
+				ask(rTab);
+				break;
+			}
+
 			rTab.clear_value(i - 1, j - 1);
 
 			ask(rTab);
@@ -69,6 +81,17 @@ int main() {
 		case 4:
 			cout << "Fila y columna entre 1...9: ";
 			cin >> i >> j;
+
+			if ((i < 0) || (j < 0) || (i > DIM_TABLERO) || (j > DIM_TABLERO)) {
+				cout << "Fuera de rango\n";
+				ask(rTab);
+				break;
+			}
+
+			if (!rTab.get_celda(i, j).is_empty()) {
+				cout << "Celda ocupada\n";
+				break;
+			}
 
 			cout << "Los posibles valores para la celda son: { ";
 			for (int a = 1; a <= 9; a++) {
