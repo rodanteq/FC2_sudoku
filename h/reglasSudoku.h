@@ -2,13 +2,21 @@
 #include <fstream>
 #include "tablero.h"
 
-const int MAX_BLOCKED = 10 ;
+const int MAX_BLOCKED = 10;
+const int MAX_VALORES = 9;
 
 using namespace std;
 
 struct lPositionBlocked {
 	int dat[MAX_BLOCKED][2];
-	int n=0;                                     //Revisar!! (valor MAX_BLOCKED??)
+	int n = 0;                                     //Revisar!! (valor MAX_BLOCKED??)
+};
+struct tValor {
+	bool posible = true;
+	int celdas_que_afectan = 0;
+};
+struct tValores {
+	tValor valores[DIM_TABLERO][DIM_TABLERO][MAX_VALORES];
 };
 
 class tReglasSudoku {
@@ -17,13 +25,16 @@ private:
 	tTablero tablero;
 	int cont;
 	lPositionBlocked blockedPosition;
+	tValores valores_celda;
 
-	/* metodos privados */
+	/* metodos privados, cambiar */
 	void set_celdas_blocked(int p, int f, int c);
 	bool previously_blocked(int f, int c) const;
 	void search_new_blocked(int f, int c);
 	void search_not_blocked(int f, int c);
 	int get_posible_value(int f, int c) const;
+	void block_values(int f, int c, int v);
+	void clear_blocked_values(int f, int c, int v);
 
 public:
 	/* constructora */
@@ -49,3 +60,12 @@ public:
 	/* inicializadora */
 	void load_sudoku(ifstream & file); // carga un Sudoku original de un archivo
 };
+/*
+Cambiar:
+-is_posible_value
+-set_value ya
+-clear_value ya
+-reset
+-autofill
+-load
+*/
