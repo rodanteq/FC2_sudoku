@@ -21,13 +21,14 @@ struct tValores {
 
 class tReglasSudoku {
 
+
 private:
 	tTablero tablero;
 	int cont;
 	lPositionBlocked blockedPosition;
 	tValores valores_celda;
 
-	/* metodos privados, cambiar */
+	/* metodos privados */
 	void set_celdas_blocked(int p, int f, int c);
 	bool previously_blocked(int f, int c) const;
 	void search_new_blocked(int f, int c);
@@ -60,12 +61,3 @@ public:
 	/* inicializadora */
 	void load_sudoku(ifstream & file); // carga un Sudoku original de un archivo
 };
-/*
-Cambiar:
--is_posible_value
--set_value ya
--clear_value ya
--reset
--autofill
--load
-*/
