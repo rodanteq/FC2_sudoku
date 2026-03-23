@@ -1,12 +1,13 @@
 #pragma once
 #include "celda.h"
 
-const int DIM_TABLERO = 9;
+const int DIM_TABLERO = 16; // el tablero es siempre de 9x9, aunque se podrían hacer tableros de otras dimensiones, pero no es el caso
 
 class tTablero {
 
 private:
-	int dimension; // numero del 1 al 9 para ser más intuitivo
+	int dimension; 
+	// minimo 1, máximo 9 (aunque se podrían hacer tableros de dimensión n^2)
 	tCelda dat[DIM_TABLERO][DIM_TABLERO];
 
 public:
