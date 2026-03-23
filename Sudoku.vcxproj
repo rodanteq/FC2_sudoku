@@ -145,6 +145,7 @@
     <Text Include="files\sudoku_2.txt" />
     <Text Include="files\sudoku_3.txt" />
     <Text Include="files\sudoku_4.txt" />
+    <Text Include="sudoku_5.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="files\Sudoku_v1__matriz3D.pdf" />
