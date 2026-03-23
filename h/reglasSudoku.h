@@ -30,9 +30,7 @@ private:
 
 	/* metodos privados */
 	void set_celdas_blocked(int p, int f, int c);
-	bool previously_blocked(int f, int c) const;
-	void search_new_blocked(int f, int c);
-	void search_not_blocked(int f, int c);
+	bool previously_blocked(int f, int c, int& res) const;
 	int get_posible_value(int f, int c) const;
 	void block_values(int f, int c, int v);
 	void clear_blocked_values(int f, int c, int v);

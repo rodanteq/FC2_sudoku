@@ -3,7 +3,7 @@
 #include "h/mostrar.h"
 
 
-string const PATH = "files/sudoku_5.txt";
+string const PATH = "files/sudoku_2.txt";
 string titulo = R"(
   ____  _   _ ____   ___  _  _  _   _ 
  / ___|| | | |  _ \ / _ \| |/ /| | | |
@@ -88,11 +88,11 @@ int main() {
 			cout << "Columna (valor entre 1..." << rTab.get_dimension() << ") : ";
 			cin >> j;
 
-			if (rTab.get_celda(i, j).is_original()) {
+			if (rTab.get_celda(i-1, j-1).is_original()) {
 
 				cout << "Error, celda original\n";
 			}
-			else if (rTab.get_celda(i, j).is_taken()) {
+			else if (rTab.get_celda(i-1, j-1).is_taken()) {
 
 				cout << "Error, celda ocupada\n";
 			}
