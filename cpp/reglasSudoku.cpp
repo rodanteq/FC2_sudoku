@@ -150,11 +150,11 @@ void tReglasSudoku::search_not_blocked(int f, int c) {
 
 		get_celdas_blocked(i, faux, caux);
 
-		if (posible_values(faux, caux) == 0) {
+		if (posible_values(faux, caux) != 0) {
 
 			for (int j = i; j < get_num_celdas_blocked() - 1; j++) {
 
-				get_celdas_blocked(get_num_celdas_blocked() - 1, faux, caux);
+				get_celdas_blocked(j + 1, faux, caux);
 				set_celdas_blocked(j, faux, caux);
 			}
 			blockedPosition.n--;
