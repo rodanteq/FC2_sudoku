@@ -12,7 +12,7 @@ tCelda tReglasSudoku::get_celda(int f, int c) const {
 	return tablero.get_value(f, c);
 }
 
-bool tReglasSudoku::finish() const { // comprobar si los valores son correctos??
+bool tReglasSudoku::finish() const {
 	return cont == get_dimension() * get_dimension();
 }
 bool tReglasSudoku::blocked() const {
@@ -42,6 +42,16 @@ int tReglasSudoku::posible_values(int f, int c) const { // en este caso los nume
 }
 
 /* modificadoras */
+void tReglasSudoku::set_up_block_values(int dimension) {
+	for (int i = 0; i < dimension; i++) {
+		for (int j = 0; j < dimension; j++) {
+			for (int z = 0; z < dimension; z++) {
+				valores_celda.valores[i][j][z].posible = true;
+				valores_celda.valores[i][j][z].celdas_que_afectan = 0;
+			}
+		}
+	}
+}
 void tReglasSudoku::block_values(int f, int c, int v) {
 	int dim = get_dimension(), a;
 	int hdim = sqrt(dim);
@@ -126,7 +136,7 @@ void tReglasSudoku::set_celdas_blocked(int p, int f, int c) {
 	blockedPosition.dat[p][0] = f;
 	blockedPosition.dat[p][1] = c;
 }
-bool tReglasSudoku::previously_blocked(int f, int c, int& res) const { // Simplifico
+bool tReglasSudoku::previously_blocked(int f, int c, int& res) const { 
 	
 	int i = 0; int faux, caux;
 	res = -1; 
@@ -235,7 +245,7 @@ void tReglasSudoku::load_sudoku(ifstream& file) { // suponemos que el archivo es
 	file >> dim;
 
 	tablero.set_up(dim);
-	// cout << "dim es : " << dim << '\n';
+	set_up_block_values(dim);
 
 	tCelda celda;
 

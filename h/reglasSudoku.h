@@ -2,17 +2,17 @@
 #include <fstream>
 #include "tablero.h"
 
-const int MAX_BLOCKED = 10;
-const int MAX_VALORES = 9;
+const int MAX_BLOCKED = 10;	// Ponemos un maximo de celdas bloqueadas de 10 
+const int MAX_VALORES = 16; // Suponemos que la matriz maxima de entrada es 16x16 (16 valores)
 
 using namespace std;
 
 struct lPositionBlocked {
 	int dat[MAX_BLOCKED][2];
-	int n = 0;                                     //Revisar!! (valor MAX_BLOCKED??)
+	int n = 0;
 };
 struct tValor {
-	bool posible = true;
+	bool posible = false;
 	int celdas_que_afectan = 0;
 };
 struct tValores {
@@ -32,6 +32,7 @@ private:
 	void set_celdas_blocked(int p, int f, int c);
 	bool previously_blocked(int f, int c, int& res) const;
 	int get_posible_value(int f, int c) const;
+	void set_up_block_values(int dimension);
 	void block_values(int f, int c, int v);
 	void clear_blocked_values(int f, int c, int v);
 

@@ -15,7 +15,7 @@ Hecho por: Carlos Martin-Salas y Rodrigo Antequera
 Febrero 2026
 )";
 
-void ask(tReglasSudoku& const rTab) { // const??
+void ask(tReglasSudoku& const rTab) {
 
 	if (rTab.blocked()) showBlocked(rTab);
 	showTablero(rTab);
