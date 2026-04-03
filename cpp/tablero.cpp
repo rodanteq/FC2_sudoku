@@ -12,6 +12,7 @@ int tTablero::get_dimension() const {
 
 	return dimension;
 }
+
 tCelda tTablero::get_value(int f, int c) const {
 
 	return dat[f][c];
