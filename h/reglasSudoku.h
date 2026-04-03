@@ -41,21 +41,21 @@ public:
 	tReglasSudoku();
 
 	/* consultoras */
-	int get_dimension() const; // devuelve la dimensión del tablero
-	tCelda get_celda(int f, int c) const; // devuelve la celda en la posición (f,c)
-	bool finish() const ; // true si y sólo si el Sudoku está resuelto
+	int get_dimension() const; // devuelve la dimensiÃ³n del tablero
+	tCelda get_celda(int f, int c) const; // devuelve la celda en la posiciÃ³n (f,c)
+	bool finish() const ; // true si y sÃ³lo si el Sudoku estÃ¡ resuelto
 	bool blocked() const ; // true si el Sudoku tiene celdas bloqueadas
-	int get_num_celdas_blocked() const ; // devuelve el número de celdas bloqueadas
-	int get_num_celdas_empty() const ; // devuelve el número de celdas vacías
-	void get_celdas_blocked(int p, int& f, int& c) const; // devuelve en (f,c) la celda bloqueada en la posición p - creamos un metodo privado set_celdas_blocked
-	bool is_posible_value(int f, int c, int v) const; // true si y sólo si v se puede colocar en (f,c)
-	int posible_values(int f, int c) const; // devuelve el número de posibles valores para (f,c)
+	int get_num_celdas_blocked() const ; // devuelve el nÃºmero de celdas bloqueadas
+	int get_num_celdas_empty() const ; // devuelve el nÃºmero de celdas vacÃ­as
+	void get_celdas_blocked(int p, int& f, int& c) const; // devuelve en (f,c) la celda bloqueada en la posiciÃ³n p - creamos un metodo privado set_celdas_blocked
+	bool is_posible_value(int f, int c, int v) const; // true si y sÃ³lo si v se puede colocar en (f,c)
+	int posible_values(int f, int c) const; // devuelve el nÃºmero de posibles valores para (f,c)
 	
 	/* modificadoras */
 	bool set_value(int f, int c, tCelda celda); // pone v en (f,c)
 	bool clear_value(int f, int c); // pone la celda (f,c) a VACIA
 	void reset(); // recupera el Sudoku original
-	void autofill(); // rellena todas las celdas con un único valor posible
+	void autofill(); // rellena todas las celdas con un Ãºnico valor posible
 
 	/* inicializadora */
 	void load_sudoku(ifstream & file); // carga un Sudoku original de un archivo
