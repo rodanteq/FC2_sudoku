@@ -74,7 +74,8 @@ void showMenu() {
 		"3.- Reset\n" <<
 		"4.- Posibles valores de una celda vacia\n" <<
 		"5.- Autocompletar celdas con valor unico\n" <<
-		"6.- Salir\n" <<
+		"6.- Salir\n";
+	cout << YELLOW <<
 		"Elige una opcion: " << RESET;
 }
 
