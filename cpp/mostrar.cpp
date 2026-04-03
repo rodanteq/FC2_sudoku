@@ -14,7 +14,6 @@ void table(tReglasSudoku& const tab) {
 
 	int i = tab.get_dimension();
 	int j = sqrt(i);
-	// cout << "i es " << i << " y j es " << j << '\n';
 	tCelda aux;
 
 	for (int a = 0; a < i; a += j) {
