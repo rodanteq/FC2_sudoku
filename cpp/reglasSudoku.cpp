@@ -1,11 +1,12 @@
 #include "../h/reglasSudoku.h"
+#include "../h/checkML.h"
 
 tReglasSudoku& tReglasSudoku::operator= (const tReglasSudoku& reglas) {
 
 	if (this != &reglas) { // evita autoasignación
 		/* se libera la memoria ocupada por this*/
 		delete this->blockedPosition.p;
-		this->blockedPosition.p = new tPos(*(reglas.blockedPosition.p));
+		*this->blockedPosition.p = new tPos(**(reglas.blockedPosition.p));
 	}
 	this->cont = reglas.cont;
 	this->tablero = reglas.tablero;
@@ -16,9 +17,15 @@ tReglasSudoku& tReglasSudoku::operator= (const tReglasSudoku& reglas) {
 	return *this;
 }
 
-
 /* constructora */
-tReglasSudoku::tReglasSudoku() : cont(0), tablero(), blockedPosition(), valores_celda(){};
+tReglasSudoku::tReglasSudoku() {
+
+	for (int i = 0; i <= this->blockedPosition.n; i++) {
+		this->blockedPosition.p[i] = new tPos;
+	}
+	this->cont = 0;
+
+}
 tReglasSudoku::tReglasSudoku(const tReglasSudoku& sudoku) {
 	*this = sudoku;
 }
@@ -44,8 +51,8 @@ int tReglasSudoku::get_num_celdas_empty() const {
 	return get_dimension() * get_dimension() - cont;
 }
 void tReglasSudoku::get_celdas_blocked(int pos, int& f, int& c) const {
-	f = blockedPosition.p[pos].f;
-	c = blockedPosition.p[pos].c;
+	f = blockedPosition.p[pos]->f;
+	c = blockedPosition.p[pos]->c;
 }
 bool tReglasSudoku::is_posible_value(int f, int c, int v) const {
 	return valores_celda.valores[f][c][v - 1].posible;
@@ -79,7 +86,6 @@ void tReglasSudoku::block_values(int f, int c, int v) {
 		valores_celda.valores[f][i][v - 1].celdas_que_afectan++;
 		if (get_celda(f, i).is_empty() && posible_values(f, i) == 0 && not previously_blocked(f, i, a)) {
 			set_celdas_blocked(get_num_celdas_blocked(), f, i);
-			blockedPosition.n++;
 		}
 	}
 	for (int i = 0; i < dim; i++) {
@@ -87,7 +93,6 @@ void tReglasSudoku::block_values(int f, int c, int v) {
 		valores_celda.valores[i][c][v - 1].celdas_que_afectan++;
 		if (get_celda(i, c).is_empty() && posible_values(i, c) == 0 && not previously_blocked(i, c, a)) {
 			set_celdas_blocked(get_num_celdas_blocked(), i, c);
-			blockedPosition.n++;
 		}
 	}
 	int fa = f - (f % hdim), ca = c - (c % hdim);
@@ -97,7 +102,6 @@ void tReglasSudoku::block_values(int f, int c, int v) {
 			valores_celda.valores[fa + i][ca + j][v - 1].celdas_que_afectan++;
 			if (get_celda(fa + i, ca + j).is_empty() && posible_values(fa + i, ca + j) == 0 && not previously_blocked(fa + i, ca + j, a)) {
 				set_celdas_blocked(get_num_celdas_blocked(), fa + i, ca + j);
-				blockedPosition.n++;
 			}
 		}
 	}
@@ -151,9 +155,18 @@ void tReglasSudoku::clear_blocked_values(int f, int c, int v) {
 		}
 	}
 }
-void tReglasSudoku::set_celdas_blocked(int p, int f, int c) {
-	blockedPosition.dat[p][0] = f;
-	blockedPosition.dat[p][1] = c;
+void tReglasSudoku::set_celdas_blocked(int pos, int fi, int ci) {
+	if (blockedPosition.dim <= pos) {
+		resize(blockedPosition);
+	}
+	if (blockedPosition.p[pos] == nullptr) {
+		blockedPosition.p[pos] = new tPos;
+	}
+
+	blockedPosition.p[pos]->f=fi;
+	blockedPosition.p[pos]->c=ci;
+	
+	blockedPosition.n++;
 }
 bool tReglasSudoku::previously_blocked(int f, int c, int& res) const { 
 	
@@ -282,4 +295,21 @@ void tReglasSudoku::load_sudoku(ifstream& file) { // suponemos que el archivo es
 			}
 		}
 	}
+}
+
+void tReglasSudoku::resize(lPositionBlocked& lb) {
+
+	if (lb.dim > lb.n)return;
+
+	int size = lb.dim * 2;
+	tPos** paux = new tPos*[size];
+	for (int i = 0; i < lb.n; i++) {
+		paux[i] = lb.p[i];
+	}
+	for (int i = lb.n; i < size; i++) {
+		paux[i] = nullptr;
+	}
+	lb.dim = size;
+	delete[] lb.p;
+	lb.p = paux;
 }

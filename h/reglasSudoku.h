@@ -12,13 +12,13 @@ class tReglasSudoku {
 private:
 
 	struct tPos {
-		int f;
-		int c;
+		int f=0;
+		int c=0;
 	};
 
 	struct lPositionBlocked {
 		int dim = 1;
-		tPos* p = new tPos[dim];
+		tPos** p = new tPos*[dim];
 		int n = 0; 
 	};
 	struct tValor {
@@ -36,19 +36,46 @@ private:
 
 	/* metodos privados */
 	void set_celdas_blocked(int p, int f, int c);
+
+	/*hacer un clear_celdas_blocked
+
+	pensar como hacer el borrado de la lista de blockeadas, putos arrays de punteros dinamicos
+
+
+	Para la funcion recursiva tenemos que probar valores en todas las posiciones
+	desplazando la fila y las columans de los valores y porbando nuevamente
+	la funcion acabara si llega a una posicion bloqueada
+	Ademas la puñetera funcion la tenemos que implementar en el main por lo tanto
+	tenemos que hacer uso de las funciones de reglassudoku.
+
+	suerte para hacer esa puta funcion recursiva que va a tardar horas en resolver los sudokus.
+
+
+
+	*/
+
+
+
+
 	bool previously_blocked(int f, int c, int& res) const;
 	int get_posible_value(int f, int c) const;
 	void set_up_block_values(int dimension);
 	void block_values(int f, int c, int v);
 	void clear_blocked_values(int f, int c, int v);
 
-public:
-
+	/* Método auxiliar lista dinamica */
+	void resize(lPositionBlocked& lb);
 	/*sobrecarga*/
 	tReglasSudoku& operator= (const tReglasSudoku& reglas);
 
+public:
+
+	
+	
+
 	/* constructora */
 	tReglasSudoku();
+	tReglasSudoku(const tReglasSudoku& sudoku);
 
 	/* consultoras */
 	int get_dimension() const; // devuelve la dimensión del tablero
