@@ -25,6 +25,8 @@ void ask(tReglasSudoku& const rTab) {
 
 int main() {
 
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
 	cout << DGREEN << titulo << RESET << endl;
 
 	tReglasSudoku rTab;

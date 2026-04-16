@@ -7,22 +7,28 @@ const int MAX_VALORES = 16; // Suponemos que la matriz maxima de entrada es 16x1
 
 using namespace std;
 
-struct lPositionBlocked {
-	int dat[MAX_BLOCKED][2];
-	int n = 0;
-};
-struct tValor {
-	bool posible = false;
-	int celdas_que_afectan = 0;
-};
-struct tValores {
-	tValor valores[DIM_TABLERO][DIM_TABLERO][MAX_VALORES];
-};
-
 class tReglasSudoku {
 
-
 private:
+
+	struct tPos {
+		int f;
+		int c;
+	};
+
+	struct lPositionBlocked {
+		int dim = 1;
+		tPos* p = new tPos[dim];
+		int n = 0; 
+	};
+	struct tValor {
+		bool posible = false;
+		int celdas_que_afectan = 0;
+	};
+	struct tValores {
+		tValor valores[DIM_TABLERO][DIM_TABLERO][MAX_VALORES];
+	};
+
 	tTablero tablero;
 	int cont;
 	lPositionBlocked blockedPosition;
@@ -37,6 +43,10 @@ private:
 	void clear_blocked_values(int f, int c, int v);
 
 public:
+
+	/*sobrecarga*/
+	tReglasSudoku& operator= (const tReglasSudoku& reglas);
+
 	/* constructora */
 	tReglasSudoku();
 
@@ -59,4 +69,5 @@ public:
 
 	/* inicializadora */
 	void load_sudoku(ifstream & file); // carga un Sudoku original de un archivo
+
 };
