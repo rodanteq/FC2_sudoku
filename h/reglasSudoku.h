@@ -18,44 +18,22 @@ private:
 
 	struct lPositionBlocked {
 		int dim = 1;
-		tPos** p = new tPos*[dim];
+		tPos** p = new tPos * [dim];
 		int n = 0; 
 	};
 	struct tValor {
 		bool posible = false;
 		int celdas_que_afectan = 0;
 	};
-	struct tValores {
-		tValor valores[DIM_TABLERO][DIM_TABLERO][MAX_VALORES];
-	};
 
 	tTablero tablero;
 	int cont;
 	lPositionBlocked blockedPosition;
-	tValores valores_celda;
+	tValor valores_celda[DIM_TABLERO][DIM_TABLERO][MAX_VALORES];
 
 	/* metodos privados */
-	void set_celdas_blocked(int p, int f, int c);
-
-	/*hacer un clear_celdas_blocked
-
-	pensar como hacer el borrado de la lista de blockeadas, putos arrays de punteros dinamicos
-
-
-	Para la funcion recursiva tenemos que probar valores en todas las posiciones
-	desplazando la fila y las columans de los valores y porbando nuevamente
-	la funcion acabara si llega a una posicion bloqueada
-	Ademas la puñetera funcion la tenemos que implementar en el main por lo tanto
-	tenemos que hacer uso de las funciones de reglassudoku.
-
-	suerte para hacer esa puta funcion recursiva que va a tardar horas en resolver los sudokus.
-
-
-
-	*/
-
-
-
+	void set_celdas_blocked(int pos, int f, int c);
+	void clear_celdas_blocked(int pos);
 
 	bool previously_blocked(int f, int c, int& res) const;
 	int get_posible_value(int f, int c) const;
@@ -64,14 +42,11 @@ private:
 	void clear_blocked_values(int f, int c, int v);
 
 	/* Método auxiliar lista dinamica */
-	void resize(lPositionBlocked& lb);
+	void resize(lPositionBlocked& lb, bool increase);
 	/*sobrecarga*/
 	tReglasSudoku& operator= (const tReglasSudoku& reglas);
 
 public:
-
-	
-	
 
 	/* constructora */
 	tReglasSudoku();

@@ -3,7 +3,7 @@
 #include "h/mostrar.h"
 
 
-string const PATH = "files/sudoku_2.txt";
+string const PATH = "files/sudoku_1.txt";
 string titulo = R"(
   ____  _   _ ____   ___  _  _  _   _ 
  / ___|| | | |  _ \ / _ \| |/ /| | | |
@@ -21,6 +21,36 @@ void ask(tReglasSudoku& const rTab) {
 	showTablero(rTab);
 	showMenu();
 }
+bool resolver_sudoku(tReglasSudoku& reglas, int fila, int columna) {
+	int n = reglas.get_dimension(), nfila = fila, ncolumna = columna;
+	bool res = false;
+	tCelda celda; celda.set_taken();
+	do {
+		if (ncolumna < n - 1)ncolumna++;
+		else if (nfila < n ) {
+			nfila++;
+			ncolumna = 0;
+		}
+	} while (!reglas.get_celda(nfila, ncolumna).is_empty() && nfila < n && ncolumna < n );
+
+
+	if (reglas.finish()) return true;
+	if (reglas.blocked() || reglas.posible_values(fila, columna) == 0)return false;
+
+	 
+	int i = 1;
+	while (i <= n && !res) {
+		if (reglas.is_posible_value(fila, columna, i)) {
+			celda.set_value(i);
+			reglas.set_value(fila, columna, celda);
+			res = resolver_sudoku(reglas, nfila, ncolumna);
+			if (!res) reglas.clear_value(fila, columna);
+		}
+		i++;
+	}
+	return res;
+	
+}
 
 
 int main() {
@@ -34,7 +64,7 @@ int main() {
 
 	int option, i, j, aux1, valor;
 	char char1;
-	bool exit = false;
+	bool exit = false, resuelto=false;
 	tCelda celda;
 
 	arc.open(PATH);
@@ -129,6 +159,13 @@ int main() {
 			}
 			break;
 
+		case 7:
+			resuelto = resolver_sudoku(rTab, 0, 0);
+			if (resuelto) cout << "\n\n\n\n\n\n";
+			ask(rTab);
+
+			break;
+
 		default:
 			cout << "Elige una opcion correcta: ";
 			break;
@@ -144,4 +181,3 @@ int main() {
 
 	return 0;
 }
-
