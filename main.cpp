@@ -3,7 +3,7 @@
 #include "h/mostrar.h"
 
 
-string const PATH = "files/sudoku_1.txt";
+string const PATH = "files/sudoku_9.txt";
 string titulo = R"(
   ____  _   _ ____   ___  _  _  _   _ 
  / ___|| | | |  _ \ / _ \| |/ /| | | |
@@ -26,28 +26,38 @@ bool resolver_sudoku(tReglasSudoku& reglas, int fila, int columna) {
 	bool res = false;
 	tCelda celda; celda.set_taken();
 	do {
-		if (ncolumna < n - 1)ncolumna++;
-		else if (nfila < n ) {
+		if (ncolumna < n - 1) ncolumna++;
+		else if (nfila < n - 1) {
 			nfila++;
 			ncolumna = 0;
 		}
+		else if (nfila == n - 1) nfila++; // para salir del bucle
 	} while (!reglas.get_celda(nfila, ncolumna).is_empty() && nfila < n && ncolumna < n );
 
 
 	if (reglas.finish()) return true;
-	if (reglas.blocked() || reglas.posible_values(fila, columna) == 0)return false;
+	if (reglas.blocked() || reglas.posible_values(fila, columna) == 0) return false;
 
-	 
-	int i = 1;
-	while (i <= n && !res) {
-		if (reglas.is_posible_value(fila, columna, i)) {
-			celda.set_value(i);
-			reglas.set_value(fila, columna, celda);
-			res = resolver_sudoku(reglas, nfila, ncolumna);
-			if (!res) reglas.clear_value(fila, columna);
-		}
-		i++;
+	if (!reglas.get_celda(fila, columna).is_empty()) {
+
+		resolver_sudoku(reglas, nfila, ncolumna);
 	}
+	else {
+		int i = 1;
+		while (i <= n && !res) {
+			if (reglas.is_posible_value(fila, columna, i)) {
+				celda.set_value(i);
+				reglas.set_value(fila, columna, celda);
+				res = resolver_sudoku(reglas, nfila, ncolumna);
+				if (!res) {
+					reglas.clear_value(fila, columna);
+					// cout << "Mal en " << fila << ' ' << columna << endl;
+				}
+			}
+			i++;
+		}
+	}
+
 	return res;
 	
 }
@@ -161,7 +171,6 @@ int main() {
 
 		case 7:
 			resuelto = resolver_sudoku(rTab, 0, 0);
-			if (resuelto) cout << "\n\n\n\n\n\n";
 			ask(rTab);
 
 			break;
