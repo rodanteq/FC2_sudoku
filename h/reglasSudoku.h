@@ -34,12 +34,13 @@ private:
 	/* metodos privados */
 	void set_celdas_blocked(int pos, int f, int c);
 	void clear_celdas_blocked(int pos);
-
-	bool previously_blocked(int f, int c, int& res) const;
-	int get_posible_value(int f, int c) const;
 	void set_up_block_values(int dimension);
-	void block_values(int f, int c, int v);
 	void clear_blocked_values(int f, int c, int v);
+
+	void block_values(int f, int c, int v);
+
+	int get_posible_value(int f, int c) const;
+	bool previously_blocked(int f, int c, int& res) const;
 
 	/* Método auxiliar lista dinamica */
 	void resize(lPositionBlocked& lb, bool increase);
@@ -55,10 +56,12 @@ public:
 	/* consultoras */
 	int get_dimension() const; // devuelve la dimensión del tablero
 	tCelda get_celda(int f, int c) const; // devuelve la celda en la posición (f,c)
+
 	bool finish() const ; // true si y sólo si el Sudoku está resuelto
 	bool blocked() const ; // true si el Sudoku tiene celdas bloqueadas
 	int get_num_celdas_blocked() const ; // devuelve el número de celdas bloqueadas
 	int get_num_celdas_empty() const ; // devuelve el número de celdas vacías
+
 	void get_celdas_blocked(int p, int& f, int& c) const; // devuelve en (f,c) la celda bloqueada en la posición p - creamos un metodo privado set_celdas_blocked
 	bool is_posible_value(int f, int c, int v) const; // true si y sólo si v se puede colocar en (f,c)
 	int posible_values(int f, int c) const; // devuelve el número de posibles valores para (f,c)
@@ -71,5 +74,5 @@ public:
 
 	/* inicializadora */
 	void load_sudoku(ifstream & file); // carga un Sudoku original de un archivo
-
+	void resize(lPositionBlocked& lb, bool type);
 };

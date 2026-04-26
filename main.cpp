@@ -1,15 +1,17 @@
-
 #include "h/reglasSudoku.h"
 #include "h/mostrar.h"
 
+// CONVENIO PARA EL PASO DE DATOS POR REFERENCIA:
+// Al llamar a una función, se le pasa el valor del dato en el array.
+// Por ejemplo, si queremos pasar la posición (1,2) del sudoku, se le pasará el valor 0 para la fila y el valor 1 para la columna.
 
 string const PATH = "files/sudoku_9.txt";
-string titulo = R"(
-  ____  _   _ ____   ___  _  _  _   _ 
- / ___|| | | |  _ \ / _ \| |/ /| | | |
- \___ \| | | | | | | | | | ' / | | | |
-  ___) | |_| | |_| | |_| | . \ | |_| |
- |____/ \___/|____/ \___/|_|\_\ \___/ 
+string titulo = R"(  :)
+  ____  _   _ ____   ___  _  _ _   _ 
+ / ___|| | | |  _ \ / _ \| |/ / | | |
+ \___ \| | | | | | | | | | ' /| | | |
+  ___) | |_| | |_| | |_| | . \| |_| |
+ |____/ \___/|____/ \___/|_|\_\\___/
 
 Hecho por: Carlos Martin-Salas y Rodrigo Antequera
 Febrero 2026
@@ -21,7 +23,9 @@ void ask(tReglasSudoku& const rTab) {
 	showTablero(rTab);
 	showMenu();
 }
+
 bool resolver_sudoku(tReglasSudoku& reglas, int fila, int columna) {
+
 	int n = reglas.get_dimension(), nfila = fila, ncolumna = columna;
 	bool res = false;
 	tCelda celda; celda.set_taken();
@@ -38,10 +42,8 @@ bool resolver_sudoku(tReglasSudoku& reglas, int fila, int columna) {
 	if (reglas.finish()) return true;
 	if (reglas.blocked() || reglas.posible_values(fila, columna) == 0) return false;
 
-	if (!reglas.get_celda(fila, columna).is_empty()) {
+	if (!reglas.get_celda(fila, columna).is_empty()) resolver_sudoku(reglas, nfila, ncolumna);
 
-		resolver_sudoku(reglas, nfila, ncolumna);
-	}
 	else {
 		int i = 1;
 		while (i <= n && !res) {
@@ -57,29 +59,27 @@ bool resolver_sudoku(tReglasSudoku& reglas, int fila, int columna) {
 			i++;
 		}
 	}
-
 	return res;
-	
 }
 
 
 int main() {
 
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // memoria dinámica
 
-	cout << DGREEN << titulo << RESET << endl;
+	cout << GREEN << titulo << RESET << endl;
 
 	tReglasSudoku rTab;
+	tCelda celda;
 	ifstream arc;
 
-	int option, i, j, aux1, valor;
-	char char1;
-	bool exit = false, resuelto=false;
-	tCelda celda;
+	int option, i, j, valor;
+	char c;
+	bool exit = false, resuelto = false;
 
 	arc.open(PATH);
 	if (!arc.is_open()) {
-		cout << "Fallo al cargar archivo.";
+		cout << RED << "Fallo al cargar archivo." << RESET;
 		return 1;
 	}
 	rTab.load_sudoku(arc);
@@ -97,13 +97,15 @@ int main() {
 			cout << "Valor: ";
 			cin >> valor;
 
-			if (rTab.is_posible_value(i - 1, j - 1, valor)) {
+			if (rTab.is_posible_value(i - 1, j - 1, valor)) { // comprobacion en la propia funcion is_posible_value
+
 				celda.set_value(valor);
 				celda.set_taken();
+
 				rTab.set_value(i - 1, j - 1, celda);
-
-			}	
-
+				
+				cout << ROSE << "Valor introducido\n" << RESET;
+			}
 			ask(rTab);
 			break;
 
@@ -113,13 +115,15 @@ int main() {
 			cout << "Columna (valor entre 1..." << rTab.get_dimension() << ") : ";
 			cin >> j;
 
-			if(rTab.clear_value(i - 1, j - 1)) cout << "Valor borrado\n";
+			if (rTab.clear_value(i - 1, j - 1)) cout << ROSE << "Valor borrado\n" << RESET; // comprobacion en la propia funcion clear_value
 			
 			ask(rTab);
 			break;
 
 		case 3:
 			rTab.reset();
+
+			cout << ROSE << "Sudoku reseteado\n" << RESET;
 
 			ask(rTab);
 			break;
@@ -132,19 +136,19 @@ int main() {
 
 			if (rTab.get_celda(i-1, j-1).is_original()) {
 
-				cout << "Error, celda original\n";
+				cout << RED << "Error, celda original\n" << RESET;
 			}
 			else if (rTab.get_celda(i-1, j-1).is_taken()) {
 
-				cout << "Error, celda ocupada\n";
+				cout << RED << "Error, celda ocupada\n" << RESET;
 			}
 			else {
 
-				cout << "Los posibles valores para la celda son: { ";
+				cout << ROSE << "Los posibles valores para la celda son: { ";
 				for (int a = 1; a <= rTab.get_dimension(); a++) {
 					if (rTab.is_posible_value(i - 1, j - 1, a)) cout << a << " ";
 				}
-				cout << "}\n";
+				cout << "}\n" << RESET;
 			}
 				ask(rTab);
 				break;
@@ -152,17 +156,19 @@ int main() {
 		case 5:
 			rTab.autofill();
 
+			cout << ROSE << "Celdas con valor único completadas\n" << RESET;
+
 			ask(rTab);
 			break;
 
 		case 6:
 
-			cout << "Ya te rindes?(S/N)"; cin >> char1;
-			if (char1 == 'N') {
+			cout << "Ya te rindes?(S/N)"; cin >> c;
+			if (c == 'N') {
 				cout << "Elige otra opcion entonces: ";
 				ask(rTab);
 			}
-			else if (char1 == 'S') exit = true;	
+			else if (c == 'S') exit = true;	
 			else {
 				cout << "Si quieres salir pon S\n";
 				ask(rTab);
@@ -171,8 +177,10 @@ int main() {
 
 		case 7:
 			resuelto = resolver_sudoku(rTab, 0, 0);
-			ask(rTab);
 
+			cout << ROSE << "Resolucion automatica del sudoku\n" << RESET;
+
+			ask(rTab);
 			break;
 
 		default:
@@ -181,7 +189,7 @@ int main() {
 		}
 		if (rTab.finish()){
 			cout << YELLOW << "\n\nLO HAS LOGRADO!!!\nIntroduce una letra para salir:\n" << RESET;
-			cin >> char1; 
+			cin >> c; 
 			exit = true;
 		}
 		cout << '\n';

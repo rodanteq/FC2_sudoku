@@ -13,5 +13,4 @@ BLANCO = 250;
 
 void showTablero(tReglasSudoku& const tab);
 void showMenu();
-void table(tReglasSudoku& const tab);
 void showBlocked(tReglasSudoku& const regTab);

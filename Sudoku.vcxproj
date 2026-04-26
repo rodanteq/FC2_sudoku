@@ -130,12 +130,14 @@
     <ClInclude Include="h\celda.h" />
     <ClInclude Include="h\checkML.h" />
     <ClInclude Include="h\colors.h" />
+    <ClInclude Include="h\listaSudoku.h" />
     <ClInclude Include="h\mostrar.h" />
     <ClInclude Include="h\reglasSudoku.h" />
     <ClInclude Include="h\tablero.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\celda.cpp" />
+    <ClCompile Include="cpp\listaSudoku.cpp" />
     <ClCompile Include="cpp\mostrar.cpp" />
     <ClCompile Include="cpp\reglasSudoku.cpp" />
     <ClCompile Include="cpp\tablero.cpp" />
