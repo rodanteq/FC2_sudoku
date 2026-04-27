@@ -94,9 +94,27 @@
     <Text Include="files\sudoku_9.txt">
       <Filter>Archivos de recursos</Filter>
     </Text>
+    <Text Include="files\sudoku_10.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
+    <Text Include="files\sudoku_11.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
+    <Text Include="files\sudoku_12.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
+    <Text Include="files\sudoku_13.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="files\Sudoku_25_26_Version2.pdf">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="files\Sudoku_25_26_Version2_mejorada-1.pdf">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="files\Sudoku_v1__matriz3D.pdf">
       <Filter>Archivos de recursos</Filter>
     </None>
   </ItemGroup>

@@ -15,7 +15,7 @@ tReglasSudoku& tReglasSudoku::operator= (const tReglasSudoku& reglas) {
 	this->tablero = reglas.tablero;
 	for (int i = 0; i < DIM_TABLERO; i++) {
 		for (int j = 0; j < DIM_TABLERO; j++) {
-			for (int z = 0; z < MAX_VALORES; z++) {
+			for (int z = 0; z < DIM_TABLERO; z++) {
 				valores_celda[i][j][z].posible = reglas.valores_celda[i][j][z].posible;
 				valores_celda[i][j][z].celdas_que_afectan = reglas.valores_celda[i][j][z].celdas_que_afectan;
 			}
@@ -242,15 +242,15 @@ bool tReglasSudoku::clear_value(int f, int c) {
 
 	int dim = get_dimension();
 	if (get_celda(f, c).is_empty()) {
-		cout << "Error, celda ya vacia\n";
+		cout << RED << "Error, celda ya vacia\n" << RESET;
 		return false;
 	}
 	else if (get_celda(f, c).is_original()) {
-		cout << "Error, celda original\n";
+		cout << RED << "Error, celda original\n" << RESET;
 		return false;
 	}
 	else if (f >= get_dimension() || c >= get_dimension() || f < 0 || c < 0) {
-		cout << "Error, posicion fuera de rango\n";
+		cout << RED << "Error, posicion fuera de rango\n" << RESET;
 		return false;
 	}
 	else {
@@ -321,10 +321,12 @@ void tReglasSudoku::load_sudoku(ifstream& file) { // suponemos que el archivo es
 	}
 }
 void tReglasSudoku::resize(lPositionBlocked& lb, bool type) {
+	
 	int size;
 
 	if (type) size = lb.dim * 2;
-	else size = lb.dim / 2;
+	else if (lb.dim > 3) size = lb.dim / 2; // no tiene sentido hacerlo mas pequeño que 2
+	else size = lb.dim;
 
 	tPos** paux = new tPos*[size];
 	for (int i = 0; i < lb.n; i++) {
@@ -336,5 +338,4 @@ void tReglasSudoku::resize(lPositionBlocked& lb, bool type) {
 	lb.dim = size;
 	delete[] lb.p;
 	lb.p = paux;
-
 }

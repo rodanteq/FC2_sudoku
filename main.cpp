@@ -1,11 +1,12 @@
 #include "h/reglasSudoku.h"
 #include "h/mostrar.h"
+#include <string>
 
 // CONVENIO PARA EL PASO DE DATOS POR REFERENCIA:
 // Al llamar a una función, se le pasa el valor del dato en el array.
 // Por ejemplo, si queremos pasar la posición (1,2) del sudoku, se le pasará el valor 0 para la fila y el valor 1 para la columna.
 
-string const PATH = "files/sudoku_9.txt";
+const int MAX_PATH = 10;
 string titulo = R"(  :)
   ____  _   _ ____   ___  _  _ _   _ 
  / ___|| | | |  _ \ / _ \| |/ / | | |
@@ -28,7 +29,9 @@ bool resolver_sudoku(tReglasSudoku& reglas, int fila, int columna) {
 
 	int n = reglas.get_dimension(), nfila = fila, ncolumna = columna;
 	bool res = false;
-	tCelda celda; celda.set_taken();
+	tCelda celda; 
+	celda.set_taken();
+
 	do {
 		if (ncolumna < n - 1) ncolumna++;
 		else if (nfila < n - 1) {
@@ -36,15 +39,17 @@ bool resolver_sudoku(tReglasSudoku& reglas, int fila, int columna) {
 			ncolumna = 0;
 		}
 		else if (nfila == n - 1) nfila++; // para salir del bucle
-	} while (!reglas.get_celda(nfila, ncolumna).is_empty() && nfila < n && ncolumna < n );
-
-
+	} while (!reglas.get_celda(nfila, ncolumna).is_empty() && nfila < n && ncolumna < n);
 	if (reglas.finish()) return true;
-	if (reglas.blocked() || reglas.posible_values(fila, columna) == 0) return false;
+	if (reglas.blocked() || not reglas.get_celda(fila, columna).is_empty() || reglas.posible_values(fila, columna) == 0) {
+		if (not reglas.get_celda(fila, columna).is_empty()) {
 
-	if (!reglas.get_celda(fila, columna).is_empty()) resolver_sudoku(reglas, nfila, ncolumna);
+			resolver_sudoku(reglas, nfila, ncolumna);
+		}
+		else return false;
+	}
+	if (reglas.get_celda(fila, columna).is_empty()) {
 
-	else {
 		int i = 1;
 		while (i <= n && !res) {
 			if (reglas.is_posible_value(fila, columna, i)) {
@@ -59,7 +64,8 @@ bool resolver_sudoku(tReglasSudoku& reglas, int fila, int columna) {
 			i++;
 		}
 	}
-	return res;
+	if (fila == 0 && columna == 0) return reglas.finish();
+	else return res;
 }
 
 
@@ -73,9 +79,18 @@ int main() {
 	tCelda celda;
 	ifstream arc;
 
-	int option, i, j, valor;
+	int option, i, j, valor, num;
+	bool exit = false, resuelto = false, pathcheck = false;
 	char c;
-	bool exit = false, resuelto = false;
+
+	while (not pathcheck) {
+		cout << ROSE << "Introduce el numero del archivo con el sudoku a resolver (ejemplo: \"1\" para resolver \"sudoku_1.txt\"): " << RESET;
+		cin >> num;
+		if (num < 0 || num > MAX_PATH) cout << RED << "Error, elige una opcion posible\n" << RESET;
+		else pathcheck = true;
+	}
+
+	string PATH = "files/sudoku_" + to_string(num) + ".txt";
 
 	arc.open(PATH);
 	if (!arc.is_open()) {
@@ -177,8 +192,8 @@ int main() {
 
 		case 7:
 			resuelto = resolver_sudoku(rTab, 0, 0);
-
-			cout << ROSE << "Resolucion automatica del sudoku\n" << RESET;
+			if (resuelto) cout << ROSE << "Resolucion automatica del sudoku:\n" << RESET;
+			else cout << RED << "No se ha podido resolver el sudoku\n" << RESET;
 
 			ask(rTab);
 			break;

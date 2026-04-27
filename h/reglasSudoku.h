@@ -2,9 +2,6 @@
 #include <fstream>
 #include "tablero.h"
 
-const int MAX_BLOCKED = 10;	// Ponemos un maximo de celdas bloqueadas de 10 
-const int MAX_VALORES = 16; // Suponemos que la matriz maxima de entrada es 16x16 (16 valores)
-
 using namespace std;
 
 class tReglasSudoku {
@@ -29,7 +26,7 @@ private:
 	tTablero tablero;
 	int cont;
 	lPositionBlocked blockedPosition;
-	tValor valores_celda[DIM_TABLERO][DIM_TABLERO][MAX_VALORES];
+	tValor valores_celda[DIM_TABLERO][DIM_TABLERO][DIM_TABLERO]; // el valor maximo sera igual a la dimension
 
 	/* metodos privados */
 	void set_celdas_blocked(int pos, int f, int c);
@@ -42,8 +39,6 @@ private:
 	int get_posible_value(int f, int c) const;
 	bool previously_blocked(int f, int c, int& res) const;
 
-	/* Método auxiliar lista dinamica */
-	void resize(lPositionBlocked& lb, bool increase);
 	/*sobrecarga*/
 	tReglasSudoku& operator= (const tReglasSudoku& reglas);
 
@@ -74,5 +69,7 @@ public:
 
 	/* inicializadora */
 	void load_sudoku(ifstream & file); // carga un Sudoku original de un archivo
-	void resize(lPositionBlocked& lb, bool type);
+
+	/* Método auxiliar lista dinamica */
+	void resize(lPositionBlocked& lb, bool increase);
 };
