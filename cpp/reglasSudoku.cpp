@@ -6,24 +6,37 @@
 
 tReglasSudoku& tReglasSudoku::operator= (const tReglasSudoku& reglas) {
 
-	if (this != &reglas) { // evita autoasignación
-		/* se libera la memoria ocupada por this*/
-		delete this->blockedPosition.p;
-		*this->blockedPosition.p = new tPos(**(reglas.blockedPosition.p));
-	}
-	this->cont = reglas.cont;
-	this->tablero = reglas.tablero;
-	for (int i = 0; i < DIM_TABLERO; i++) {
-		for (int j = 0; j < DIM_TABLERO; j++) {
-			for (int z = 0; z < DIM_TABLERO; z++) {
-				valores_celda[i][j][z].posible = reglas.valores_celda[i][j][z].posible;
-				valores_celda[i][j][z].celdas_que_afectan = reglas.valores_celda[i][j][z].celdas_que_afectan;
+	if (this != &reglas) { 
+		for (int i = 0; i < this->blockedPosition.n; i++) {
+			delete this->blockedPosition.p[i]; 
+		}
+		delete[] this->blockedPosition.p; 
+
+		this->cont = reglas.cont;
+		this->tablero = reglas.tablero;
+		this->path = reglas.path;
+		this->blockedPosition.dim = reglas.blockedPosition.dim;
+		this->blockedPosition.n = reglas.blockedPosition.n;
+
+		this->blockedPosition.p = new tPos * [this->blockedPosition.dim];
+		for (int i = 0; i < this->blockedPosition.dim; i++) {
+			if (i < reglas.blockedPosition.n) {
+				
+				this->blockedPosition.p[i] = new tPos(*reglas.blockedPosition.p[i]);
+			}
+			else {
+				this->blockedPosition.p[i] = nullptr;
+			}
+		}
+
+		for (int i = 0; i < DIM_TABLERO; i++) {
+			for (int j = 0; j < DIM_TABLERO; j++) {
+				for (int z = 0; z < DIM_TABLERO; z++) {
+					this->valores_celda[i][j][z] = reglas.valores_celda[i][j][z];
+				}
 			}
 		}
 	}
-	this->blockedPosition.dim = reglas.blockedPosition.dim;
-	this->blockedPosition.n = reglas.blockedPosition.n;
-
 	return *this;
 }
 
@@ -47,6 +60,10 @@ int tReglasSudoku::get_dimension() const {
 }
 tCelda tReglasSudoku::get_celda(int f, int c) const {
 	return tablero.get_value(f, c);
+}
+
+string tReglasSudoku::get_path()const {
+	return path;
 }
 
 bool tReglasSudoku::finish() const {
@@ -97,6 +114,10 @@ int tReglasSudoku::posible_values(int f, int c) const { // en este caso los nume
 }
 
 /* modificadoras */
+void tReglasSudoku::set_path(string p)  {
+	path = p;
+}
+
 void tReglasSudoku::block_values(int f, int c, int v) { // recordar v - 1
 	int dim = get_dimension(), a;
 	int hdim = sqrt(dim);

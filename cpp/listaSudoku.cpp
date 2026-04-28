@@ -21,11 +21,11 @@ tListaSudoku::~tListaSudoku() {
 }
 
 // consultoras
-int tListaSudoku::dame_num_elems() { // a veces salta un warning por la gestion de pila, he reducido MAX_DIM a 9
+int tListaSudoku::dame_num_elems() const{ // a veces salta un warning por la gestion de pila, he reducido MAX_DIM a 9
 
 	return num_elems;
 }
-const tReglasSudoku& tListaSudoku::dame_sudoku(int i) { // aquí me tienen que pasar valor entre [0 , num_elems-1]. Si no, se devuelve un sudoku vacío
+const tReglasSudoku& tListaSudoku::dame_sudoku(int i) const { // aquí me tienen que pasar valor entre [0 , num_elems-1]. Si no, se devuelve un sudoku vacío
 	if (i < 0 || i >= num_elems) {
 
 		cout << RED << "Error, indice fuera de rango\n" << RESET;
@@ -36,7 +36,7 @@ const tReglasSudoku& tListaSudoku::dame_sudoku(int i) { // aquí me tienen que p
 		return *lista[i];
 	}
 }
-void tListaSudoku::mostrar_lista() {
+void tListaSudoku::mostrar_lista() const {
 
 	cout << BLUE << "Hola, esta es la lista de sudokus disponibles:\n" << RESET;
 	for (int i = 0; i < num_elems; i++) {
@@ -82,7 +82,7 @@ void tListaSudoku::resize(tListaSudoku& ls, bool type) {
 
 	int size;
 
-	if (type) ls.dim * 2;
+	if (type) size=ls.dim * 2;
 	else if (dim > 3) size = ls.dim / 2; // no tiene sentido hacerlo mas pequeño que 2
 	else size = ls.dim;
 

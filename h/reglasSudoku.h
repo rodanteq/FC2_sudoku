@@ -27,6 +27,7 @@ private:
 	int cont;
 	lPositionBlocked blockedPosition;
 	tValor valores_celda[DIM_TABLERO][DIM_TABLERO][DIM_TABLERO]; // el valor maximo sera igual a la dimension
+	string path;
 
 	/* metodos privados */
 	void set_celdas_blocked(int pos, int f, int c);
@@ -40,7 +41,7 @@ private:
 	bool previously_blocked(int f, int c, int& res) const;
 
 	/*sobrecarga*/
-	tReglasSudoku& operator= (const tReglasSudoku& reglas);
+	
 
 public:
 
@@ -51,6 +52,7 @@ public:
 	/* consultoras */
 	int get_dimension() const; // devuelve la dimensión del tablero
 	tCelda get_celda(int f, int c) const; // devuelve la celda en la posición (f,c)
+	string get_path() const;
 
 	bool finish() const ; // true si y sólo si el Sudoku está resuelto
 	bool blocked() const ; // true si el Sudoku tiene celdas bloqueadas
@@ -62,6 +64,7 @@ public:
 	int posible_values(int f, int c) const; // devuelve el número de posibles valores para (f,c)
 	
 	/* modificadoras */
+	void set_path(string path);
 	bool set_value(int f, int c, tCelda celda); // pone v en (f,c)
 	bool clear_value(int f, int c); // pone la celda (f,c) a VACIA
 	void reset(); // recupera el Sudoku original
@@ -72,4 +75,5 @@ public:
 
 	/* Método auxiliar lista dinamica */
 	void resize(lPositionBlocked& lb, bool increase);
+	tReglasSudoku& operator= (const tReglasSudoku& reglas);
 };

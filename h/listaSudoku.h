@@ -12,9 +12,9 @@ public:
 	~tListaSudoku();
 
 	// consultoras
-	int dame_num_elems();
-	const tReglasSudoku& dame_sudoku(int i);
-	void mostrar_lista();
+	int dame_num_elems()const;
+	const tReglasSudoku& dame_sudoku(int i) const;
+	void mostrar_lista() const;
 
 	// modificadoras
 	void insertar(const tReglasSudoku& sudoku);
