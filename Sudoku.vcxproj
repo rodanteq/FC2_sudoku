@@ -128,23 +128,42 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="h\celda.h" />
+    <ClInclude Include="h\checkML.h" />
     <ClInclude Include="h\colors.h" />
+    <ClInclude Include="h\listaSudoku.h" />
     <ClInclude Include="h\mostrar.h" />
     <ClInclude Include="h\reglasSudoku.h" />
     <ClInclude Include="h\tablero.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\celda.cpp" />
+    <ClCompile Include="cpp\listaSudoku.cpp" />
     <ClCompile Include="cpp\mostrar.cpp" />
     <ClCompile Include="cpp\reglasSudoku.cpp" />
     <ClCompile Include="cpp\tablero.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="files\lista_partidas.txt" />
+    <Text Include="files\lista_sudokus.txt" />
+    <Text Include="files\sudoku_0.txt" />
     <Text Include="files\sudoku_1.txt" />
+    <Text Include="files\sudoku_10.txt" />
+    <Text Include="files\sudoku_11.txt" />
+    <Text Include="files\sudoku_12.txt" />
+    <Text Include="files\sudoku_13.txt" />
     <Text Include="files\sudoku_2.txt" />
+    <Text Include="files\sudoku_3.txt" />
+    <Text Include="files\sudoku_4.txt" />
+    <Text Include="files\sudoku_5.txt" />
+    <Text Include="files\sudoku_6.txt" />
+    <Text Include="files\sudoku_7.txt" />
+    <Text Include="files\sudoku_8.txt" />
+    <Text Include="files\sudoku_9.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="files\Sudoku_25_26_Version2.pdf" />
+    <None Include="files\Sudoku_25_26_Version2_mejorada-1.pdf" />
     <None Include="files\Sudoku_v1__matriz3D.pdf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

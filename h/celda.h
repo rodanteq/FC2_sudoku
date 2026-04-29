@@ -1,5 +1,5 @@
 #pragma once
-#include <iostream> // así ya lo tenemos
+#include <iostream> // así ya lo tenemos en otros scripts
 
 class tCelda {
 
