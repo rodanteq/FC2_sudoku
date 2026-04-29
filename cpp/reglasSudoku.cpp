@@ -138,19 +138,25 @@ void tReglasSudoku::block_values(int f, int c, int v) { // recordar v - 1
 	int hdim = sqrt(dim);
 	int aux;
 	for (int i = 0; i < dim; i++) {
-		if (get_celda(f,i).is_empty())cuantas_celdas[posible_values(f, i) - 1]--;
+		if (get_celda(f, i).is_empty()&& valores_celda[f][i][v - 1].posible) {
+			aux = posible_values(f, i);
+			cuantas_celdas[aux - 1]--;
+			if (aux>1)cuantas_celdas[aux - 2]++;
+		}
 		valores_celda[f][i][v - 1].posible = false;
 		valores_celda[f][i][v - 1].celdas_que_afectan++;
-		if(posible_values(f, i) > 0&& get_celda(f, i).is_empty())cuantas_celdas[posible_values(f, i) - 1]++;
 		if (get_celda(f, i).is_empty() && posible_values(f, i) == 0 && not previously_blocked(f, i, a)) {
 			set_celdas_blocked(get_num_celdas_blocked(), f, i);
 		}
 	}
 	for (int i = 0; i < dim; i++) {
-		if (get_celda(i, c).is_empty())cuantas_celdas[posible_values(i, c) - 1]--;
+		if (get_celda(i, c).is_empty()&& valores_celda[i][c][v - 1].posible) {
+			aux = posible_values(i, c);
+			cuantas_celdas[aux - 1]--;
+			if (aux > 1)cuantas_celdas[aux - 2]++;
+		}
 		valores_celda[i][c][v - 1].posible = false;
 		valores_celda[i][c][v - 1].celdas_que_afectan++;
-		if (posible_values(i, c) > 0 && get_celda(i, c).is_empty())cuantas_celdas[posible_values(i, c) - 1]++;
 		if (get_celda(i, c).is_empty() && posible_values(i, c) == 0 && not previously_blocked(i, c, a)) {
 			set_celdas_blocked(get_num_celdas_blocked(), i, c);
 		}
@@ -158,10 +164,13 @@ void tReglasSudoku::block_values(int f, int c, int v) { // recordar v - 1
 	int fa = f - (f % hdim), ca = c - (c % hdim);
 	for (int i = 0; i < hdim; i++) {
 		for (int j = 0; j < hdim; j++) {
-			if (get_celda(fa + i, ca + j).is_empty())cuantas_celdas[posible_values(fa + i, ca + j) - 1]--;
+			if (get_celda(fa + i, ca + j).is_empty()&& valores_celda[fa + i][ca + j][v - 1].posible) {
+				aux = posible_values(fa + i, ca + j);
+				cuantas_celdas[aux - 1]--;
+				if (aux > 1)cuantas_celdas[aux - 2]++;
+			}
 			valores_celda[fa + i][ca + j][v - 1].posible = false;
 			valores_celda[fa + i][ca + j][v - 1].celdas_que_afectan++;
-			if (posible_values(fa + i, ca + j) > 0 && get_celda(fa + i, ca + j).is_empty())cuantas_celdas[posible_values(fa + i, ca + j) - 1]++;
 			if (get_celda(fa + i, ca + j).is_empty() && posible_values(fa + i, ca + j) == 0 && not previously_blocked(fa + i, ca + j, a)) {
 				set_celdas_blocked(get_num_celdas_blocked(), fa + i, ca + j);
 			}
