@@ -42,12 +42,29 @@ tReglasSudoku& tReglasSudoku::operator= (const tReglasSudoku& reglas) {
 	}
 	return *this;
 }
-/*bool tReglasSudoku::operator< (const tReglasSudoku& s2) const {
-
+bool tReglasSudoku::operator< (const tReglasSudoku& s2) const {
+	
+	bool res=false; int i = 1;
+	if (this->cont != s2.cont) {
+		res = (this->cont <= s2.cont);
+	}
+	else {
+		while (!res && i<=DIM_TABLERO) {
+			res = this->cuantas_celdas[i] > s2.cuantas_celdas[i];
+			i++;
+		}
+	}
+	return res;
 }
 bool tReglasSudoku::operator==(const tReglasSudoku& s2) const{
-	
-}*/
+	int i = 1;
+	bool res = this->cont == s2.cont;
+	while (res && i <= DIM_TABLERO) {
+		res = this->cuantas_celdas[i] == s2.cuantas_celdas[i];
+		i++;
+	}
+	return res;
+}
 
 
 /* --------------------------------------------------------------------------------------- constructora --------------------------------------------------------------------------- */
@@ -95,24 +112,7 @@ void tReglasSudoku::get_celdas_blocked(int pos, int& f, int& c) const {
 	f = blockedPosition.p[pos]->f;
 	c = blockedPosition.p[pos]->c;
 }
-bool tReglasSudoku::is_posible_value(int f, int c, int v) const {
-	if (f >= get_dimension() || c >= get_dimension() || f < 0 || c < 0) {
-		cout << RED << "Error, posicion fuera de rango\n" << RESET;
-		return false;
-	}
-	else if (v <= 0 || v > get_dimension()) {
-		cout << RED << "Error, valor fuera de rango\n" << RESET;
-		return false;
-	}
-	else if (get_celda(f, c).is_original()) {
-		cout << RED << "Error, celda original\n" << RESET;
-		return false;
-	}
-	else if (not get_celda(f, c).is_empty()) {
-		cout << RED << "Error, celda ocupada\n" << RESET;
-		return false;
-	}
-	else
+bool tReglasSudoku::is_posible_value(int f, int c, int v) const { // Suponemos que todo va perfecto
 	return valores_celda[f][c][v - 1].posible;
 }
 int tReglasSudoku::posible_values(int f, int c) const { // en este caso los numeros van del 1-9
@@ -134,32 +134,55 @@ void tReglasSudoku::set_path(string p)  {
 	path = p;
 }
 
-void tReglasSudoku::block_values(int f, int c, int v) { // recordar v - 1
+void tReglasSudoku::block_values(int f, int c, int v, bool is_original) { // recordar v - 1
 	int dim = get_dimension(), a;
 	int hdim = sqrt(dim);
+	int PVantiguo;
 	for (int i = 0; i < dim; i++) {
-		valores_celda[f][i][v - 1].posible = false;
-		valores_celda[f][i][v - 1].celdas_que_afectan++;
-		if (get_celda(f, i).is_empty() && posible_values(f, i) == 0 && not previously_blocked(f, i, a)) {
-			set_celdas_blocked(get_num_celdas_blocked(), f, i);
+		if (!get_celda(f, i).is_original()) {
+			PVantiguo = posible_values(f, i);
+			valores_celda[f][i][v - 1].posible = false;
+			valores_celda[f][i][v - 1].celdas_que_afectan++;
+			if (get_celda(f, i).is_empty() && posible_values(f, i) == 0 && not previously_blocked(f, i, a)) {
+				set_celdas_blocked(get_num_celdas_blocked(), f, i);
+			}
+			if (PVantiguo != posible_values(f, i) && get_celda(f,i).is_empty() && !is_original) {
+				cuantas_celdas[PVantiguo-1]--;
+				cuantas_celdas[posible_values(f, i)-1]++;
+			}
 		}
 	}
 	for (int i = 0; i < dim; i++) {
-		valores_celda[i][c][v - 1].posible = false;
-		valores_celda[i][c][v - 1].celdas_que_afectan++;
-		if (get_celda(i, c).is_empty() && posible_values(i, c) == 0 && not previously_blocked(i, c, a)) {
-			set_celdas_blocked(get_num_celdas_blocked(), i, c);
+		if (!get_celda(i, c).is_original()) {
+			PVantiguo = posible_values(i, c);
+			valores_celda[i][c][v - 1].posible = false;
+			valores_celda[i][c][v - 1].celdas_que_afectan++;
+			if (get_celda(i, c).is_empty() && posible_values(i, c) == 0 && not previously_blocked(i, c, a)) {
+				set_celdas_blocked(get_num_celdas_blocked(), i, c);
+			}
+			if (PVantiguo != posible_values(i, c) && get_celda(i,c).is_empty()&&!is_original) {
+				cuantas_celdas[PVantiguo-1]--;
+				cuantas_celdas[posible_values(i, c)-1]++;
+			}
 		}
 	}
 	int fa = f - (f % hdim), ca = c - (c % hdim);
 	for (int i = 0; i < hdim; i++) {
 		for (int j = 0; j < hdim; j++) {
-			valores_celda[fa + i][ca + j][v - 1].posible = false;
-			valores_celda[fa + i][ca + j][v - 1].celdas_que_afectan++;
-			if (get_celda(fa + i, ca + j).is_empty() && posible_values(fa + i, ca + j) == 0 && not previously_blocked(fa + i, ca + j, a)) {
-				set_celdas_blocked(get_num_celdas_blocked(), fa + i, ca + j);
+			if (!get_celda(fa + i, ca + j).is_original()) {
+				PVantiguo = posible_values(fa + i, ca + j);
+				valores_celda[fa + i][ca + j][v - 1].posible = false;
+				valores_celda[fa + i][ca + j][v - 1].celdas_que_afectan++;
+				if (get_celda(fa + i, ca + j).is_empty() && posible_values(fa + i, ca + j) == 0 && not previously_blocked(fa + i, ca + j, a)) {
+					set_celdas_blocked(get_num_celdas_blocked(), fa + i, ca + j);
+				}
+				if (PVantiguo != posible_values(fa + i, ca + j) && get_celda(fa + i, ca + j).is_empty()&&!is_original) {
+					cuantas_celdas[PVantiguo-1]--;
+					cuantas_celdas[posible_values(fa + i, ca + j)-1]++;
+				}
 			}
 		}
+		
 	}
 }
 void tReglasSudoku::set_up_block_values(int dimension) {
@@ -175,34 +198,58 @@ void tReglasSudoku::set_up_block_values(int dimension) {
 void tReglasSudoku::clear_blocked_values(int f, int c, int v) {
 	int dim = get_dimension(), res, faux, caux;
 	int hdim = sqrt(dim);
+	int PVantiguo;
 	for (int i = 0; i < dim; i++) {
-		valores_celda[f][i][v - 1].celdas_que_afectan--;
-		if (valores_celda[f][i][v - 1].celdas_que_afectan == 0) {
-			valores_celda[f][i][v - 1].posible = true;
-			if (previously_blocked(f, i, res) && posible_values(f, i) != 0) { //Apartir de aqui eliminamos valor
-				clear_celdas_blocked(res);
+		if (!get_celda(f, i).is_original()) {
+			PVantiguo = posible_values(f, i);
+			valores_celda[f][i][v - 1].celdas_que_afectan--;
+			if (valores_celda[f][i][v - 1].celdas_que_afectan == 0) {
+				valores_celda[f][i][v - 1].posible = true;
+				if (previously_blocked(f, i, res) && posible_values(f, i) != 0) { //Apartir de aqui eliminamos valor
+					clear_celdas_blocked(res);
+				}
+			}
+			if (PVantiguo != posible_values(f, i) && get_celda(f, i).is_empty()) {
+				cuantas_celdas[PVantiguo-1]--;
+				cuantas_celdas[posible_values(f, i)-1]++;
 			}
 		}
 	}
 	for (int i = 0; i < dim; i++) {
-		valores_celda[i][c][v - 1].celdas_que_afectan--;
-		if (valores_celda[i][c][v - 1].celdas_que_afectan == 0) {
-			valores_celda[i][c][v - 1].posible = true;
-			if (previously_blocked(i, c, res) && posible_values(i, c) != 0) {
-				clear_celdas_blocked(res);
+		if (!get_celda(i, c).is_original()) {
+			PVantiguo = posible_values(i, c);
+			valores_celda[i][c][v - 1].celdas_que_afectan--;
+			if (valores_celda[i][c][v - 1].celdas_que_afectan == 0) {
+				valores_celda[i][c][v - 1].posible = true;
+				if (previously_blocked(i, c, res) && posible_values(i, c) != 0) {
+					clear_celdas_blocked(res);
+				}
+			}
+			if (PVantiguo != posible_values(i, c) && get_celda(i, c).is_empty()) {
+				cuantas_celdas[PVantiguo-1]--;
+				cuantas_celdas[posible_values(i, c)-1]++;
 			}
 		}
+		
 	}
 	int fa = f - (f % hdim), ca = c - (c % hdim);
 	for (int i = 0; i < hdim; i++) {
 		for (int j = 0; j < hdim; j++) {
-			valores_celda[fa + i][ca + j][v - 1].celdas_que_afectan--;
-			if (valores_celda[fa + i][ca + j][v - 1].celdas_que_afectan == 0) {
-				valores_celda[fa + i][ca + j][v - 1].posible = true;
-				if (previously_blocked(fa + i, ca + j, res) && posible_values(fa + i, ca + j) != 0) {
-					clear_celdas_blocked(res);
+			if (!get_celda(fa + i, ca + j).is_original()) {
+				PVantiguo = posible_values(fa + i, ca + j);
+				valores_celda[fa + i][ca + j][v - 1].celdas_que_afectan--;
+				if (valores_celda[fa + i][ca + j][v - 1].celdas_que_afectan == 0) {
+					valores_celda[fa + i][ca + j][v - 1].posible = true;
+					if (previously_blocked(fa + i, ca + j, res) && posible_values(fa + i, ca + j) != 0) {
+						clear_celdas_blocked(res);
+					}
+				}
+				if (PVantiguo != posible_values(fa + i, ca + j) && get_celda(fa + i, ca + j).is_empty()) {
+					cuantas_celdas[PVantiguo-1]--;
+					cuantas_celdas[posible_values(fa + i, ca + j)-1]++;
 				}
 			}
+			
 		}
 	}
 }
@@ -268,7 +315,7 @@ bool tReglasSudoku::set_value(int f, int c, tCelda celda) {
 		if (not celda.is_original()) cuantas_celdas[posible_values(f, c) - 1]--;
 		tablero.set_value(f, c, celda); 
 		cont++;
-		block_values(f, c, celda.get_value());
+		block_values(f, c, celda.get_value(), celda.is_original());
 
 		return true;
 	}
@@ -294,9 +341,9 @@ bool tReglasSudoku::clear_value(int f, int c) {
 	}
 	else {
 
+		clear_blocked_values(f, c, oldCelda.get_value());
 		tablero.set_value(f, c, celda);
 		cont--;
-		clear_blocked_values(f, c, oldCelda.get_value());
 		cuantas_celdas[posible_values(f, c) - 1]++;
 		return true;
 	}
@@ -342,7 +389,13 @@ void tReglasSudoku::load_sudoku(ifstream& file) { // suponemos que el archivo es
 	tablero.set_up(dim);
 	set_up_block_values(dim);
 
-	tCelda celda;
+	tCelda celda; celda.set_empty(); celda.set_value(0);
+
+	for (int i = 0; i < dim; i++) {
+		for (int j = 0; j < dim; j++) {
+			tablero.set_value(i, j, celda);
+		}
+	}
 
 	for (int i = 0; i < dim; i++) {
 		for (int j = 0; j < dim; j++) {
@@ -352,12 +405,9 @@ void tReglasSudoku::load_sudoku(ifstream& file) { // suponemos que el archivo es
 				celda.set_original();
 				set_value(i, j, celda); // tiene en cuenta que haya posibles errores en el sudoku original
 			}
-			else {
-				celda.set_empty();
-				tablero.set_value(i, j, celda);
-			}
 		}
 	}
+	
 	for (int i = 0; i < dim; i++) {
 		for (int j = 0; j < dim; j++) {
 			if (get_celda(i, j).is_empty()) {
@@ -386,3 +436,29 @@ void tReglasSudoku::resize(lPositionBlocked& lb, bool type) {
 	lb.p = paux;
 }
 
+
+
+
+
+
+/*Comprobaciones de isposiblevalue
+if (f >= get_dimension() || c >= get_dimension() || f < 0 || c < 0) {
+		cout << RED << "Error, posicion fuera de rango\n" << RESET;
+		return false;
+	}
+	else if (v <= 0 || v > get_dimension()) {
+		cout << RED << "Error, valor fuera de rango\n" << RESET;
+		return false;
+	}
+	else if (get_celda(f, c).is_original()) {
+		cout << RED << "Error, celda original\n" << RESET;
+		return false;
+	}
+	else if (not get_celda(f, c).is_empty()) {
+		cout << RED << "Error, celda ocupada\n" << RESET;
+		return false;
+	}
+	else
+
+
+*/

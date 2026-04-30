@@ -21,18 +21,11 @@ Hecho por: Carlos Martin-Salas y Rodrigo Antequera
 Febrero 2026
 )";
 
-
-void mm(tReglasSudoku& const tr) {
-	for (int i = 1; i < DIM_TABLERO; i++)
-		cout << tr.cuantas_celdas_pueden_tener(i) << '\n';
-} 
-
 void ask(tReglasSudoku& const rTab) {
 
 	if (rTab.blocked()) showBlocked(rTab);
 	showTablero(rTab);
 	showMenu();
-	mm(rTab);
 }
 
 bool resolver_sudoku(tReglasSudoku& reglas, int fila, int columna) {
@@ -164,7 +157,6 @@ void playing(tReglasSudoku& rTab) {
 	showTablero(rTab);
 	showMenu();
 	do {
-		// mm(rTab);
 		cin >> option;
 		switch (option) {
 		case 1:
@@ -304,8 +296,6 @@ int main() {
 		return -1;
 	}
 
-	tReglasSudoku rTab2 = original_list.dame_sudoku(0);
-	mm(rTab2);
 
 	download_lista(arc, games_list);
 	arc.close();

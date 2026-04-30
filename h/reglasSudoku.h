@@ -37,14 +37,11 @@ private:
 	void set_up_block_values(int dimension);
 	void clear_blocked_values(int f, int c, int v);
 
-	void block_values(int f, int c, int v);
+	void block_values(int f, int c, int v, bool is_original);
 
 	int get_posible_value(int f, int c) const;
 	bool previously_blocked(int f, int c, int& res) const;
-
-	/*sobrecarga*/
 	
-
 public:
 
 	/* constructora */
