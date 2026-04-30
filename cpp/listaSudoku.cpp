@@ -36,23 +36,49 @@ const tReglasSudoku& tListaSudoku::dame_sudoku(int i) const { // aquí me tienen
 		return *lista[i];
 	}
 }
+
+void  tListaSudoku::mostrar_sudoku(int index) const {
+	int n = this->lista[index]->get_dimension();
+	cout << "Casillas vacias: " << this->lista[index]->get_num_celdas_empty() << '\n';
+	for (int i = 1; i <= n; i++) {
+		cout << "  Celdas con " << i << " valores posibles: " << this->lista[index]->cuantas_celdas_pueden_tener(i) << '\n';
+	}
+}
+
 void tListaSudoku::mostrar_lista() const {
 
 	cout << BLUE << "Hola, esta es la lista de sudokus disponibles:\n" << RESET;
 	for (int i = 0; i < num_elems; i++) {
-		cout << ROSE << "Sudoku " << i + 1 << ": falta por implementar\n" << RESET;
+		cout << ROSE << "Sudoku " << i + 1 << '\n' << RESET;
+		this->mostrar_sudoku(i);
 		showTablero(*lista[i]);
 	}
 }
 
 // modificadoras
+
+//f auxiliar
+int tListaSudoku::busquedaBinaria(const tReglasSudoku& sudoku)const {
+	int a = 0, b = this->num_elems, c;
+	while (b - a > 1) {
+		c = (b - a) / 2 + a;
+		if ((*this->lista[c] < sudoku) || (*this->lista[c] == sudoku)) a = c;
+		else b = c;
+	}
+	if (this->num_elems!=0 && sudoku < *this->lista[a])b = a;
+	return b;
+}
+
+
 void tListaSudoku::insertar(const tReglasSudoku& sudoku) {
 
 	if (num_elems >= dim) { // si el numero de elementos es igual o mayor que la dimension, redimensionamos
 		
 		resize(*this, true);
 	}
-	lista[num_elems] = new tReglasSudoku(sudoku);
+	int index = this->busquedaBinaria(sudoku);
+	for (int i = num_elems; i > index;i--) lista[i] = lista[i - 1];
+	lista[index] = new tReglasSudoku(sudoku);
 	num_elems++;
 }
 void tListaSudoku::eliminar(int pos) { // elimina el elemento de la posición pos

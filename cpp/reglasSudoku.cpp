@@ -46,7 +46,7 @@ bool tReglasSudoku::operator< (const tReglasSudoku& s2) const {
 	
 	bool res=false; int i = 1;
 	if (this->cont != s2.cont) {
-		res = (this->cont <= s2.cont);
+		res = (this->cont > s2.cont);
 	}
 	else {
 		while (!res && i<=DIM_TABLERO) {

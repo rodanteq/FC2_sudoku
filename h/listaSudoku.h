@@ -22,4 +22,8 @@ public:
 
 	// redimensionar
 	void resize(tListaSudoku& ls, bool type);
+
+	//Auxiliares
+	int busquedaBinaria(const tReglasSudoku& sudoku)const;
+	void mostrar_sudoku(int index) const;
 };

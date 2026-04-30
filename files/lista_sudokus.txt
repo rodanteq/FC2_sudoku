@@ -8,4 +8,3 @@ sudoku_6.txt
 sudoku_7.txt
 sudoku_8.txt
 sudoku_9.txt
-
