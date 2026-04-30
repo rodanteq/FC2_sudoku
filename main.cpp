@@ -21,11 +21,18 @@ Hecho por: Carlos Martin-Salas y Rodrigo Antequera
 Febrero 2026
 )";
 
+
+void mm(tReglasSudoku& const tr) {
+	for (int i = 1; i < DIM_TABLERO; i++)
+		cout << tr.cuantas_celdas_pueden_tener(i) << '\n';
+} 
+
 void ask(tReglasSudoku& const rTab) {
 
 	if (rTab.blocked()) showBlocked(rTab);
 	showTablero(rTab);
 	showMenu();
+	mm(rTab);
 }
 
 bool resolver_sudoku(tReglasSudoku& reglas, int fila, int columna) {
@@ -90,17 +97,21 @@ void download_paths(ifstream& arc, tListaSudoku& list) {
 		aux.clear();
 	}
 }
+
 void download_sudoku(ifstream& arc, tReglasSudoku& rg) {
+
 	ifstream aux; string p; tCelda celda; celda.set_taken();
 	arc >> p;
 	aux.open(p);
 	if (aux.is_open()) {
+
 		rg.load_sudoku(aux);
 		rg.set_path(p);
 
 		int a, b, c;
 		arc >> a;
 		while (a != -1) {
+
 			arc >> b >> c;
 
 			celda.set_value(c);
@@ -112,6 +123,7 @@ void download_sudoku(ifstream& arc, tReglasSudoku& rg) {
 	else cout << "Fallo al cargar archivo\n";
 	aux.close();
 }
+
 void download_lista(ifstream& arc, tListaSudoku& list) {
 	int n; arc >> n;
 	tReglasSudoku rg;
@@ -143,6 +155,7 @@ void load_list(string PA, tListaSudoku& const ls) {
 	arc.close();
 }
 
+
 void playing(tReglasSudoku& rTab) {
 	int option, i, j, valor, num; char c;
 	bool exit = false, resuelto = false;
@@ -151,6 +164,7 @@ void playing(tReglasSudoku& rTab) {
 	showTablero(rTab);
 	showMenu();
 	do {
+		// mm(rTab);
 		cin >> option;
 		switch (option) {
 		case 1:
@@ -220,7 +234,7 @@ void playing(tReglasSudoku& rTab) {
 		case 5:
 			rTab.autofill();
 
-			cout << ROSE << "Celdas con valor único completadas\n" << RESET;
+			cout << ROSE << "Celdas con valor unico completadas\n" << RESET;
 
 			ask(rTab);
 			break;
@@ -247,6 +261,11 @@ void playing(tReglasSudoku& rTab) {
 			ask(rTab);
 			break;
 
+		case 8:
+			cout <<rTab.cuantas_celdas_pueden_tener(3);
+			ask(rTab);
+			break;
+
 		default:
 			cout << "Elige una opcion correcta: ";
 			break;
@@ -265,30 +284,32 @@ void playing(tReglasSudoku& rTab) {
 
 
 int main() {
-	
+
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // memoria dinámica
 
 	cout << GREEN << titulo << RESET << endl;
-
 	
 	ifstream arc;
 	tListaSudoku games_list, original_list;
 	arc.open(ORIGINAL_LIST_PATH);
 	if (!arc.is_open()) {
-		cout << "Fallo de carga de archivo principal\n";
+		cout << RED << "Fallo de carga de archivo principal\n" << RESET;
 		return -1;
 	}
 	download_paths(arc, original_list);
 	arc.close();
 	arc.open(GAME_PATH);
 	if (!arc.is_open()) {
-			cout << "Fallo de carga de archivo principal\n";
-			return -1;
-		}
+		cout << RED << "Fallo de carga de archivo principal\n" << RESET;
+		return -1;
+	}
+
+	tReglasSudoku rTab2 = original_list.dame_sudoku(0);
+	mm(rTab2);
+
 	download_lista(arc, games_list);
 	arc.close();
 	
-
 	int selection;
 	tReglasSudoku rTab;
 
@@ -296,41 +317,48 @@ int main() {
 	char salir; cin >> salir;
 
 	while (salir != 'A') {
+
 		if (salir == 'N') {
 			original_list.mostrar_lista();
 			cout << "Elige un sudoku:\n";
-			cin >> selection;
-			while (0 >= selection || selection > original_list.dame_num_elems()) {
-				cout << "Seleccion incorrecta, elige otro sudoku:\n";
-				cin >> selection;
+			while (!(cin >> selection) || 0 >= selection || selection > original_list.dame_num_elems()) {
+				cin.clear();
+				cin.ignore();
+				cout << RED << "Seleccion incorrecta, elige otro sudoku:\n" << RESET;
 			}
-			rTab = original_list.dame_sudoku(selection-1);
+			rTab = original_list.dame_sudoku(selection - 1);
 			playing(rTab);
+
+			if (!rTab.finish()) {
+				games_list.insertar(rTab);
+			}
 		}
 		else if (salir == 'C') {
-			games_list.mostrar_lista();
-			cout << "Elige un sudoku:\n";
-			cin >> selection;
-			while (0 >= selection || selection > games_list.dame_num_elems()) {
-				cout << "Seleccion incorrecta, elige otro sudoku:\n";
-				cin >> selection;
+
+			if (games_list.dame_num_elems() > 0) {
+
+				games_list.mostrar_lista();
+				cout << "Elige un sudoku:\n";
+				while (!(cin >> selection) || 0 >= selection || selection > games_list.dame_num_elems()) {
+					cin.clear();
+					cin.ignore();
+					cout << RED << "Seleccion incorrecta, elige otro sudoku:\n" << RESET;
+				}
+				rTab = games_list.dame_sudoku(selection - 1);
+				playing(rTab);
+
+				if (!rTab.finish()) {
+					games_list.eliminar(selection - 1);
+					games_list.insertar(rTab);
+				}
+				else if (rTab.finish()) {
+					games_list.eliminar(selection - 1);
+				}
 			}
-			rTab = games_list.dame_sudoku(selection-1);
-			playing(rTab);
+			else cout << RED << "Lista de Sudokus vacia\n" << RESET;
 		}
+		else cout << RED << "Elige una opcion correcta\n" << RESET;
 
-
-
-		if (!rTab.finish() && salir == 'N') {
-			games_list.insertar(rTab);
-		}
-		else if (!rTab.finish() && salir == 'C') {
-			games_list.eliminar(selection-1);
-			games_list.insertar(rTab);
-		}
-		else if (rTab.finish() && salir == 'C') {
-			games_list.eliminar(selection-1);
-		}
 		cout << "Partida nueva (N), continuar partida (C) o abandonar la aplicacion (A)?\n";
 		cin >> salir;
 	}

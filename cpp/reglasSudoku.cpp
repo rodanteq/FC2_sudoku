@@ -17,6 +17,9 @@ tReglasSudoku& tReglasSudoku::operator= (const tReglasSudoku& reglas) {
 		this->path = reglas.path;
 		this->blockedPosition.dim = reglas.blockedPosition.dim;
 		this->blockedPosition.n = reglas.blockedPosition.n;
+		for (int i = 0; i < DIM_TABLERO; i++) {
+			this->cuantas_celdas[i] = reglas.cuantas_celdas[i];
+		}
 
 		this->blockedPosition.p = new tPos * [this->blockedPosition.dim];
 		for (int i = 0; i < this->blockedPosition.dim; i++) {
@@ -39,15 +42,24 @@ tReglasSudoku& tReglasSudoku::operator= (const tReglasSudoku& reglas) {
 	}
 	return *this;
 }
+/*bool tReglasSudoku::operator< (const tReglasSudoku& s2) const {
 
-/* constructora */
+}
+bool tReglasSudoku::operator==(const tReglasSudoku& s2) const{
+	
+}*/
+
+
+/* --------------------------------------------------------------------------------------- constructora --------------------------------------------------------------------------- */
 tReglasSudoku::tReglasSudoku() { // normal
 
 	for (int i = 0; i <= this->blockedPosition.n; i++) {
 		this->blockedPosition.p[i] = new tPos;
 	}
 	this->cont = 0;
-
+	for (int i = 0; i < DIM_TABLERO; i++) {
+		cuantas_celdas[i] = 0;
+	}
 }
 tReglasSudoku::tReglasSudoku(const tReglasSudoku& sudoku) { // por copia
 
@@ -112,8 +124,12 @@ int tReglasSudoku::posible_values(int f, int c) const { // en este caso los nume
 	}
 	return resultado;
 }
+int tReglasSudoku::cuantas_celdas_pueden_tener(int n_valores) const {
 
-/* modificadoras */
+	return cuantas_celdas[n_valores - 1];
+}
+
+/*---------------------------------------------------------------------- modificadoras -------------------------------------------------------------------------------- */
 void tReglasSudoku::set_path(string p)  {
 	path = p;
 }
@@ -198,22 +214,23 @@ void tReglasSudoku::set_celdas_blocked(int pos, int fi, int ci) {
 		blockedPosition.p[pos] = new tPos;
 	}
 
-	blockedPosition.p[pos]->f=fi;
-	blockedPosition.p[pos]->c=ci;
-	
+	blockedPosition.p[pos]->f = fi;
+	blockedPosition.p[pos]->c = ci;
+
 	blockedPosition.n++;
 }
 
 void tReglasSudoku::clear_celdas_blocked(int pos) {
-	blockedPosition.p[pos]->f = blockedPosition.p[blockedPosition.n-1]->f;
-	blockedPosition.p[pos]->c = blockedPosition.p[blockedPosition.n-1]->c;
+	blockedPosition.p[pos]->f = blockedPosition.p[blockedPosition.n - 1]->f;
+	blockedPosition.p[pos]->c = blockedPosition.p[blockedPosition.n - 1]->c;
 
 	delete blockedPosition.p[blockedPosition.n - 1];
 	blockedPosition.p[blockedPosition.n - 1] = nullptr;
 
 	blockedPosition.n--;
-	if (blockedPosition.n < blockedPosition.dim/2) resize(blockedPosition, false);
+	if (blockedPosition.n < blockedPosition.dim / 2) resize(blockedPosition, false);
 }
+
 
 int tReglasSudoku::get_posible_value(int f, int c) const { // presuponemos que se utilizara cuando solo quede una posicion posible
 
@@ -246,8 +263,9 @@ bool tReglasSudoku::previously_blocked(int f, int c, int& res) const {
 bool tReglasSudoku::set_value(int f, int c, tCelda celda) {
 
 	int dim = get_dimension();
-	if (f < dim && c < dim && is_posible_value(f, c, celda.get_value())) {
+	if (c >= 0 && f >= 0 && f < dim && c < dim && is_posible_value(f, c, celda.get_value())) {
 
+		if (not celda.is_original()) cuantas_celdas[posible_values(f, c) - 1]--;
 		tablero.set_value(f, c, celda); 
 		cont++;
 		block_values(f, c, celda.get_value());
@@ -279,13 +297,12 @@ bool tReglasSudoku::clear_value(int f, int c) {
 		tablero.set_value(f, c, celda);
 		cont--;
 		clear_blocked_values(f, c, oldCelda.get_value());
+		cuantas_celdas[posible_values(f, c) - 1]++;
 		return true;
 	}
 }
 void tReglasSudoku::reset() {
 
-	tCelda celda;
-	celda.set_empty();
 	blockedPosition.n = 0;
 
 	for (int i = 0; i < get_dimension(); i++) {
@@ -315,8 +332,9 @@ void tReglasSudoku::autofill() {
 	}
 }
 
-/* inicializadora */
+/* ----------------------------------------------------------------------- inicializadora ------------------------------------------------------------------------------------ */
 void tReglasSudoku::load_sudoku(ifstream& file) { // suponemos que el archivo es correcto
+
 	int v;
 	int dim;
 	file >> dim;
@@ -340,6 +358,13 @@ void tReglasSudoku::load_sudoku(ifstream& file) { // suponemos que el archivo es
 			}
 		}
 	}
+	for (int i = 0; i < dim; i++) {
+		for (int j = 0; j < dim; j++) {
+			if (get_celda(i, j).is_empty()) {
+				cuantas_celdas[posible_values(i, j) - 1]++;
+			}
+		}
+	}
 }
 void tReglasSudoku::resize(lPositionBlocked& lb, bool type) {
 	
@@ -360,3 +385,4 @@ void tReglasSudoku::resize(lPositionBlocked& lb, bool type) {
 	delete[] lb.p;
 	lb.p = paux;
 }
+

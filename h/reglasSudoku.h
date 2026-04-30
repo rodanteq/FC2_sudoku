@@ -22,12 +22,14 @@ private:
 		bool posible = false;
 		int celdas_que_afectan = 0;
 	};
+	typedef int arrValores[DIM_TABLERO];
 
 	tTablero tablero;
 	int cont;
 	lPositionBlocked blockedPosition;
 	tValor valores_celda[DIM_TABLERO][DIM_TABLERO][DIM_TABLERO]; // el valor maximo sera igual a la dimension
 	string path;
+	arrValores cuantas_celdas;
 
 	/* metodos privados */
 	void set_celdas_blocked(int pos, int f, int c);
@@ -75,5 +77,10 @@ public:
 
 	/* Método auxiliar lista dinamica */
 	void resize(lPositionBlocked& lb, bool increase);
+
+	int cuantas_celdas_pueden_tener(int n_valores) const;
+
+	bool operator<(const tReglasSudoku& s2) const;
+	bool operator==(const tReglasSudoku& s2) const;
 	tReglasSudoku& operator= (const tReglasSudoku& reglas);
 };
