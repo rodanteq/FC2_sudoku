@@ -1,7 +1,7 @@
 #include "../h/mostrar.h"
 using namespace std;
 
-void barHorizontal(int j) {
+void barHorizontal(int j) { // funcion auxiliar para poner la barra horizontal
 
 	cout << setw(4) << setfill(' ') << ' ';
 	for (int i = 0; i < j; i++)
@@ -10,11 +10,10 @@ void barHorizontal(int j) {
 	cout << char(CRUZ) << '\n';
 }
 
-void table(tReglasSudoku& const tab) {
+void table(tReglasSudoku& const tab) { // funcion auxiliar que muestra el tablero
 
 	int i = tab.get_dimension();
 	int j = sqrt(i);
-	// cout << "i es " << i << " y j es " << j << '\n';
 	tCelda aux;
 
 	for (int a = 0; a < i; a += j) {
@@ -22,7 +21,7 @@ void table(tReglasSudoku& const tab) {
 		barHorizontal(j);
 		for (int b = 0; b < j; b++) {
 
-			cout << ' ' << left << setw(3) << setfill(' ') << a + b + 1;
+			cout << MAGENTA << ' ' << left << setw(3) << setfill(' ') << a + b + 1 << RESET;
 
 			for (int c = 0; c < i; c += j) {
 
@@ -45,17 +44,16 @@ void table(tReglasSudoku& const tab) {
 	barHorizontal(j);
 }
 
-
 void showTablero(tReglasSudoku& const tab) {
 
 	int i, j;
 	i = tab.get_dimension();
 	j = sqrt(i);
 
-	cout << "\n\n" << setw(6) << setfill(' ') << ' ';
+	cout << "\n" << setw(6) << setfill(' ') << ' ';
 	for (int c = 1; c <= i; c += j) {
 		for (int d = 0; d < j; d++)
-			cout << left << setw(3) << setfill(' ') << c+d;
+			cout << MAGENTA << left << setw(3) << setfill(' ') << c+d << RESET;
 
 		cout << ' ';
 	}
@@ -68,26 +66,28 @@ void showTablero(tReglasSudoku& const tab) {
 
 void showMenu() {
 
-	cout << 
+	cout << LBLUE <<
 		"1.- Poner numero\n" <<
 		"2.- Quitar numero\n" <<
 		"3.- Reset\n" <<
 		"4.- Posibles valores de una celda vacia\n" <<
 		"5.- Autocompletar celdas con valor unico\n" <<
 		"6.- Salir\n" <<
-		"Elige una opcion: ";
+		"7.- Terminar sudoku\n\n";
+	cout << YELLOW <<
+		"Elige una opcion: " << RESET;
 }
 
 void showBlocked(tReglasSudoku& const regTab) {
 
-	cout << "Sudoku bloqueado...\n" <<
-		"Las casillas bloqueadas son: ";
+	cout << RED << "Sudoku bloqueado...\n" <<
+		"Las casillas bloqueadas son: " << RESET;
 
 	int n = regTab.get_num_celdas_blocked(), a,b;
 	for (int i = 0; i < n; i++) {
 		regTab.get_celdas_blocked(i, a, b);
 		cout << '(' << a + 1 << ',' << b + 1 << ")  ";
 	}
-	cout << '\n' <<
-		"Considere la opcion de cambiar los valores o resetear\n";
+	cout << '\n' << RED <<
+		"Considere la opcion de cambiar los valores o resetear\n" << RESET;
 }

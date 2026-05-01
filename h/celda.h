@@ -1,13 +1,23 @@
 #pragma once
-#include <iostream> // así ya lo tenemos
+
+#include <iostream> // así ya lo tenemos en otros scripts
+
+#include <fstream>
+
+#include <iomanip>
+
+#include "colors.h"
+
+using namespace std;
 
 class tCelda {
 
 private:
-	enum tEstado { ORIGINAL, TAKEN, EMPTY };
-	int value;
-	tEstado status;
+	enum tEstado { ORIGINAL, TAKEN, EMPTY }; 
+	int value; // valor de la celda
+	tEstado status; // estado de la celda
 public:
+	/* constructora */
 	tCelda();
 	/* métodos de consulta */
 	bool is_empty()const; // devuelve true si y sólo si la celda es VACIA

@@ -1,19 +1,22 @@
 #pragma once
 #include "celda.h"
 
-const int DIM_TABLERO = 16; // el tablero es siempre de 9x9, aunque se podrÌan hacer tableros de otras dimensiones, pero no es el caso
+const int DIM_TABLERO = 9;	// el tablero es siempre de 9x9, aunque se podr√≠an hacer tableros de otras dimensiones, pero no es el caso
+							// nueva nota, reducimos (de 16x16) a 9x9  para reducir el uso de memoria
 
 class tTablero {
 
 private:
-	int dimension; 
-	// minimo 1, m·ximo 9 (aunque se podrÌan hacer tableros de dimensiÛn n^2)
-	tCelda dat[DIM_TABLERO][DIM_TABLERO];
+	int dimension; // dimension del tablero
+	tCelda dat[DIM_TABLERO][DIM_TABLERO]; // array bidimensional de celdas
 
 public:
+	/* constructora */
 	tTablero();
-	void set_up(int v);
-	int get_dimension() const;
-	tCelda get_value(int f, int c) const;
-	void set_value(int f, int c, tCelda celda);
+	/* m√©todos de consulta */
+	int get_dimension() const; // devuelve la dimensi√≥n del tablero
+	tCelda get_value(int f, int c) const; // devuelve la celda en la posici√≥n (f,c)
+	/* m√©todos modificadores */
+	void set_up(int v); // pone el valor v como dimension
+	void set_value(int f, int c, tCelda celda); // pone el valor de la celda en la posici√≥n (f,c) a celda
 };
