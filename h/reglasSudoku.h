@@ -1,6 +1,7 @@
 #pragma once
 #include "tablero.h"
 
+
 class tReglasSudoku {
 
 private:
@@ -62,6 +63,8 @@ public:
 	bool is_posible_value(int f, int c, int v) const; // true si y sólo si v se puede colocar en (f,c)
 	int posible_values(int f, int c) const; // devuelve el número de posibles valores para (f,c)
 	
+	int cuantas_celdas_pueden_tener(int n_valores) const; // devuelve el número de celdas que pueden tener exactamente n_valores posibles (v2)
+
 	/* modificadoras */
 	void set_path(string path); // ...
 
@@ -76,9 +79,8 @@ public:
 
 	/* metodo auxiliar lista dinamica */
 	void resize(lPositionBlocked& lb, bool increase); // redimensiona la lista de celdas bloqueadas, aumentando o disminuyendo su capacidad en x2
-	int cuantas_celdas_pueden_tener(int n_valores) const; // devuelve el número de celdas que pueden tener exactamente n_valores posibles
 
-	/* operadores */
+	/* sobrecarga de operadores */
 	bool operator<(const tReglasSudoku& s2) const;
 	bool operator==(const tReglasSudoku& s2) const;
 	tReglasSudoku& operator= (const tReglasSudoku& reglas);

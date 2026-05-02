@@ -1,5 +1,7 @@
 #pragma once
 #include "reglasSudoku.h"
+#include "mostrar.h"
+
 
 class tListaSudoku {
 private:

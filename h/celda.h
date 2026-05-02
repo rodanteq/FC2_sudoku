@@ -6,9 +6,15 @@
 
 #include <iomanip>
 
+#include <string>
+
+#include "checkML.h"
+
 #include "colors.h"
 
+
 using namespace std;
+
 
 class tCelda {
 

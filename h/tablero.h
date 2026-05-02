@@ -1,6 +1,7 @@
 #pragma once
 #include "celda.h"
 
+
 const int DIM_TABLERO = 9;	// el tablero es siempre de 9x9, aunque se podrían hacer tableros de otras dimensiones, pero no es el caso
 							// nueva nota, reducimos (de 16x16) a 9x9  para reducir el uso de memoria
 

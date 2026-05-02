@@ -1,7 +1,5 @@
-#include "h/reglasSudoku.h"
 #include "h/listaSudoku.h"
 #include "h/mostrar.h"
-#include <string>
 
 // CONVENIO PARA EL PASO DE DATOS POR REFERENCIA:
 // Al llamar a una función, se le pasa el valor del dato en el array.
@@ -10,15 +8,17 @@
 string GAME_PATH = "./files/lista_partidas.txt", ORIGINAL_LIST_PATH = "./files/lista_sudokus.txt";
 
 
-string titulo = R"(  :)
+string titulo1 = R"(
   ____  _   _ ____   ___  _  _ _   _ 
  / ___|| | | |  _ \ / _ \| |/ / | | |
  \___ \| | | | | | | | | | ' /| | | |
   ___) | |_| | |_| | |_| | . \| |_| |
- |____/ \___/|____/ \___/|_|\_\\___/
+ |____/ \___/|____/ \___/|_|\_\\___/  v2
+)";
+string titulo2 = R"(
+ Hecho por : Carlos Martin - Salas y Rodrigo Antequera
+ Febrero 2026
 
-Hecho por: Carlos Martin-Salas y Rodrigo Antequera
-Febrero 2026
 )";
 
 void ask(tReglasSudoku& const rTab) {
@@ -259,7 +259,7 @@ void playing(tReglasSudoku& rTab) {
 			break;
 
 		default:
-			cout << "Elige una opcion correcta: ";
+			cout << RED << "Elige una opcion correcta: " << RESET;
 			break;
 		}
 		if (rTab.finish()) {
@@ -279,7 +279,7 @@ int main() {
 
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // memoria dinámica
 
-	cout << GREEN << titulo << RESET << endl;
+	cout << GREEN << titulo1 << LBLUE << titulo2 << RESET << endl;
 	
 	ifstream arc;
 	tListaSudoku games_list, original_list;
@@ -303,14 +303,14 @@ int main() {
 	int selection;
 	tReglasSudoku rTab;
 
-	cout << "Partida nueva (N), continuar partida (C) o abandonar la aplicacion (A)?\n";
+	cout << YELLOW << "Partida nueva (N), continuar partida (C) o abandonar la aplicacion (A)?\n" << RESET;
 	char salir; cin >> salir;
 
 	while (salir != 'A') {
 
 		if (salir == 'N') {
 			original_list.mostrar_lista();
-			cout << "Elige un sudoku:\n";
+			cout << MAGENTA << "Elige un sudoku:\n" << RESET;
 			while (!(cin >> selection) || 0 >= selection || selection > original_list.dame_num_elems()) {
 				cin.clear();
 				cin.ignore();
@@ -328,7 +328,7 @@ int main() {
 			if (games_list.dame_num_elems() > 0) {
 
 				games_list.mostrar_lista();
-				cout << "Elige un sudoku:\n";
+				cout << MAGENTA << "Elige un sudoku:\n" << RESET;
 				while (!(cin >> selection) || 0 >= selection || selection > games_list.dame_num_elems()) {
 					cin.clear();
 					cin.ignore();
@@ -349,7 +349,7 @@ int main() {
 		}
 		else cout << RED << "Elige una opcion correcta\n" << RESET;
 
-		cout << "Partida nueva (N), continuar partida (C) o abandonar la aplicacion (A)?\n";
+		cout << YELLOW << "Partida nueva (N), continuar partida (C) o abandonar la aplicacion (A)?\n" << RESET;
 		cin >> salir;
 	}
 

@@ -1,12 +1,11 @@
 #include "../h/mostrar.h"
-using namespace std;
+
 
 void barHorizontal(int j) { // funcion auxiliar para poner la barra horizontal
 
 	cout << setw(4) << setfill(' ') << ' ';
-	for (int i = 0; i < j; i++)
+	for (int i = 0; i < j; i++) 
 		cout << char(CRUZ) << setw(3 * j) << setfill(char(BARRA_HORIZONTAL)) << char(BARRA_HORIZONTAL);
-
 	cout << char(CRUZ) << '\n';
 }
 
@@ -85,6 +84,7 @@ void showBlocked(tReglasSudoku& const regTab) {
 
 	int n = regTab.get_num_celdas_blocked(), a,b;
 	for (int i = 0; i < n; i++) {
+
 		regTab.get_celdas_blocked(i, a, b);
 		cout << '(' << a + 1 << ',' << b + 1 << ")  ";
 	}
