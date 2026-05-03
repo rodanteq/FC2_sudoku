@@ -1,6 +1,5 @@
 #include "../h/listaSudoku.h"
-#include "../h/colors.h"
-#include "../h/mostrar.h"
+
 
 // constructora, destructora
 tListaSudoku::tListaSudoku() : num_elems(0), dim(2) {
@@ -25,7 +24,7 @@ int tListaSudoku::dame_num_elems() const{ // a veces salta un warning por la ges
 
 	return num_elems;
 }
-const tReglasSudoku& tListaSudoku::dame_sudoku(int i) const { // aquí me tienen que pasar valor entre [0 , num_elems-1]. Si no, se devuelve un sudoku vacío
+const tReglasSudoku& tListaSudoku::dame_sudoku(int i) const { // aquí me tienen que pasar valor entre [0 , num_elems-1] - si no, se devuelve un sudoku vacío
 	if (i < 0 || i >= num_elems) {
 
 		cout << RED << "Error, indice fuera de rango\n" << RESET;
@@ -36,40 +35,18 @@ const tReglasSudoku& tListaSudoku::dame_sudoku(int i) const { // aquí me tienen
 		return *lista[i];
 	}
 }
-
-void  tListaSudoku::mostrar_sudoku(int index) const {
-	int n = this->lista[index]->get_dimension();
-	cout << "Casillas vacias: " << this->lista[index]->get_num_celdas_empty() << '\n';
-	for (int i = 1; i <= n; i++) {
-		cout << "  Celdas con " << i << " valores posibles: " << this->lista[index]->cuantas_celdas_pueden_tener(i) << '\n';
-	}
-}
-
 void tListaSudoku::mostrar_lista() const {
 
-	cout << BLUE << "Hola, esta es la lista de sudokus disponibles:\n" << RESET;
+	cout << BLUE << "Esta es la lista de sudokus disponibles:\n\n" << RESET;
 	for (int i = 0; i < num_elems; i++) {
-		cout << ROSE << "Sudoku " << i + 1 << '\n' << RESET;
+
+		cout << ROSE << "Sudoku numero " << i + 1 << " ->\n\n" << RESET;
 		this->mostrar_sudoku(i);
 		showTablero(*lista[i]);
 	}
 }
 
 // modificadoras
-
-//f auxiliar
-int tListaSudoku::busquedaBinaria(const tReglasSudoku& sudoku)const {
-	int a = 0, b = this->num_elems, c;
-	while (b - a > 1) {
-		c = (b - a) / 2 + a;
-		if ((*this->lista[c] < sudoku) || (*this->lista[c] == sudoku)) a = c;
-		else b = c;
-	}
-	if (this->num_elems!=0 && sudoku < *this->lista[a])b = a;
-	return b;
-}
-
-
 void tListaSudoku::insertar(const tReglasSudoku& sudoku) {
 
 	if (num_elems >= dim) { // si el numero de elementos es igual o mayor que la dimension, redimensionamos
@@ -77,7 +54,7 @@ void tListaSudoku::insertar(const tReglasSudoku& sudoku) {
 		resize(*this, true);
 	}
 	int index = this->busquedaBinaria(sudoku);
-	for (int i = num_elems; i > index;i--) lista[i] = lista[i - 1];
+	for (int i = num_elems; i > index; i--) lista[i] = lista[i - 1];
 	lista[index] = new tReglasSudoku(sudoku);
 	num_elems++;
 }
@@ -108,7 +85,7 @@ void tListaSudoku::resize(tListaSudoku& ls, bool type) {
 
 	int size;
 
-	if (type) size=ls.dim * 2;
+	if (type) size = ls.dim * 2;
 	else if (dim > 3) size = ls.dim / 2; // no tiene sentido hacerlo mas pequeño que 2
 	else size = ls.dim;
 
@@ -122,4 +99,27 @@ void tListaSudoku::resize(tListaSudoku& ls, bool type) {
 	ls.dim = size;
 	delete[] ls.lista;
 	ls.lista = paux;
+}
+
+//auxiliares
+int tListaSudoku::busquedaBinaria(const tReglasSudoku& sudoku) const {
+	int a = 0, b = this->num_elems, c; // a es el indice del primer elemento, b el indice del ultimo elemento + 1, y c el indice del elemento del medio
+	while (b - a > 1) {
+
+		c = (b - a) / 2 + a;
+
+		if ((*this->lista[c] < sudoku) || (*this->lista[c] == sudoku)) b = c; // si el sudoku del medio es menor o igual que el sudoku que queremos insertar, el indice del elemento del medio pasa a ser el final
+		else a = c;
+	}
+	if (this->num_elems != 0 && not (sudoku < *this->lista[a])) b = a;
+	return b;
+}
+void  tListaSudoku::mostrar_sudoku(int index) const {
+
+	int n = this->lista[index]->get_dimension();
+	cout << ORANGE << "Casillas vacias: " << this->lista[index]->get_num_celdas_empty() << "\n\n" << RESET;
+	for (int i = 1; i <= n; i++) {
+
+		cout << CYAN << " - Celdas con " << i << " valores posibles: " << this->lista[index]->cuantas_celdas_pueden_tener(i) << '\n' << RESET;
+	}
 }
