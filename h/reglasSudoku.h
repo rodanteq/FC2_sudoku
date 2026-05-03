@@ -7,11 +7,11 @@ class tReglasSudoku {
 private:
 
 	struct tPos { // tipo para almacenar la posición de una celda bloqueada
-		int f=0;
-		int c=0;
+		int f = 0;
+		int c = 0;
 	};
 	struct lPositionBlocked { // tipo con una lista dinámica de tPos (dimension y numero de elementos)
-		int dim = 1; 
+		int dim = 2; 
 		tPos** p = new tPos * [dim];
 		int n = 0; 
 	};
@@ -42,9 +42,11 @@ private:
 	
 public:
 
-	/* constructora */
+	/* constructora y destructora */
 	tReglasSudoku();
 	tReglasSudoku(const tReglasSudoku& sudoku); // por copia
+	~tReglasSudoku();
+
 
 	/* consultoras */
 	int get_dimension() const; // devuelve la dimensión del tablero
